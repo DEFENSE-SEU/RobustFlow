@@ -20,7 +20,7 @@
 
 </div>
 
-> If you encounter any difficulties in using or reproducing the code, please contact me directly (Email: xushx@seu.edu.cn, Wechat: 13270628738).
+> If you encounter any difficulties in using or reproducing the code, please get in touch with me directly (Email: xushx@seu.edu.cn, Wechat: 13270628738).
 
 The code will be updated before 8th October.
 
