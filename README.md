@@ -7,9 +7,11 @@
 [Shengxiang Xu (徐圣翔)](https://xushengxianggg.github.io/)<img src="assets/SEU.png" alt="Logo" width="20">, &nbsp; &nbsp; 
 [Jiayi Zhang (张佳钇)](https://didiforgithub.github.io/)<img src="assets/HKUST.png" alt="Logo" width="20">, &nbsp; &nbsp; 
 [Shimin Di (邸世民)](https://sdiaa.github.io/)✉<img src="assets/SEU.png" alt="Logo" width="20">, &nbsp; &nbsp; 
+
 [Yuyu Luo (骆昱宇)](https://luoyuyu.vip/)<img src="assets/HKUST.png" alt="Logo" width="20">, &nbsp; &nbsp; 
 [Liang Yao (姚亮)](https://1e12leon.top/)<img src="assets/HHU.jpg" alt="Logo" width="20">, &nbsp; &nbsp; 
 [Hanmo Liu (刘翰墨)](https://liuhanmo321.github.io/)<img src="assets/HKUST.png" alt="Logo" width="20">, &nbsp; &nbsp; 
+
 [Jia Zhu (朱佳)](https://www.scholat.com/javaelf)<img src="assets/ZJNU.jpg" alt="Logo" width="25">, &nbsp; &nbsp; 
 [Fan Liu (刘凡)](https://multimodality.group/author/%E5%88%98%E5%87%A1/)<img src="assets/HHU.jpg" alt="Logo" width="20">, &nbsp; &nbsp; 
 [Min-Ling Zhang (张敏灵)](https://palm.seu.edu.cn/zhangml/)✉<img src="assets/SEU.png" alt="Logo" width="20">, &nbsp; &nbsp; 
