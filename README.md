@@ -1,5 +1,4 @@
 <div align="center">
-
 # RobustFlow: Towards Robust Agentic Workflow Generation
 
 ![Github stars](https://img.shields.io/github/stars/DEFENSE-SEU/RobustFlow.svg)
@@ -23,6 +22,24 @@
 > If you encounter any difficulties in using or reproducing the code, please get in touch with me directly (Email: xushx@seu.edu.cn, Wechat: 13270628738).
 
 The code will be updated before 8th October.
+
+## Introduction
+
+Welcome to the official repository of our paper "RobustFlow: Towards Robust Agentic Workflow Generation"!
+
+The automated generation of agentic workflows is a promising frontier for enabling large language models (LLMs) to solve complex tasks. However, our investigation reveals that the robustness of agentic workflow remains a critical, unaddressed challenge. Current methods often generate wildly inconsistent workflows when provided with instructions that are semantically identical but differently phrased. This brittleness severely undermines their reliability and trustworthiness for real-world applications. 
+
+To quantitatively diagnose this instability, we propose metrics based on nodal and topological similarity to evaluate workflow consistency against common semantic variations such as paraphrasing and noise injection. 
+
+![robust_evaluation_metric](assets/robust_evaluation_metric.png)
+
+Subsequently, we further propose a novel training framework, RobustFlow, that leverages preference optimization to teach models invariance to instruction variations.
+
+![method_overview](assets/method_overview.png)
+
+By training on sets of synonymous task descriptions, RobustFlow boosts workflow robustness scores to 70% - 90%, which is a substantial improvement over existing approaches.
+
+![experiments](assets/experiments.png)
 
 ## Star History
 
