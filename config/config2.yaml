@@ -1,11 +1,11 @@
 models:
- "<model_name>":
-   api_type: "openai"
-   base_url: "<your base url>"
-   api_key: "<your api key>"
-   temperature: 0
- "<model_name>":
-   api_type: "openai"
-   base_url: "<your base url>"
-   api_key: "<your api key>"
-   temperature: 0
+  "gpt-4o-mini":
+    api_type: "openai"
+    base_url: "https://api.linkapi.org/v1"
+    api_key: "sk-XilSri6YnWxgj96h3rvrHjAWl4Qly8GNu9ZWwfxpwdxN0plk"
+    temperature: 0.3
+  "gpt-4":
+    api_type: "openai"
+    base_url: "https://api.linkapi.org/v1"
+    api_key: "sk-XilSri6YnWxgj96h3rvrHjAWl4Qly8GNu9ZWwfxpwdxN0plk"
+    temperature: 0.3
