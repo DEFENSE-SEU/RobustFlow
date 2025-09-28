@@ -1,0 +1,4 @@
+networkx==3.2.1
+numpy==2.0.2
+sentence-transformers==5.5.1
+typing==3.7.4.3

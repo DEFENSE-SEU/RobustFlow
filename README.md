@@ -42,6 +42,15 @@ By training on sets of synonymous task descriptions, RobustFlow boosts workflow 
 
 ![experiments](assets/experiments.png)
 
+## Quick Start
+
+1. Setup the Python environment:
+   
+    ```python
+    conda create -n robustflow python=3.9
+    pip install -r requirements.txt
+    ```
+
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=DEFENSE-SEU/RobustFlow&type=Date)](https://www.star-history.com/#DEFENSE-SEU/RobustFlow&Date)
