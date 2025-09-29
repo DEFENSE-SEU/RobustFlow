@@ -53,6 +53,20 @@ By training on sets of synonymous task descriptions, RobustFlow boosts workflow 
     pip install -r requirements.txt
     ```
 
+## Citation
+If you use RobustFlow in your research, please cite our paper:
+```
+@misc{xu2025robustflowrobustagenticworkflow,
+      title={RobustFlow: Towards Robust Agentic Workflow Generation}, 
+      author={Shengxiang Xu and Jiayi Zhang and Shimin Di and Yuyu Luo and Liang Yao and Hanmo Liu and Jia Zhu and Fan Liu and Min-Ling Zhang},
+      year={2025},
+      eprint={2509.21834},
+      archivePrefix={arXiv},
+      primaryClass={cs.MA},
+      url={https://arxiv.org/abs/2509.21834}, 
+}
+```
+
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=DEFENSE-SEU/RobustFlow&type=Date)](https://www.star-history.com/#DEFENSE-SEU/RobustFlow&Date)
