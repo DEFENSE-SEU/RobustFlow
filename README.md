@@ -2,6 +2,8 @@
 
 # RobustFlow: Towards Robust Agentic Workflow Generation
 
+[![Arxiv](https://img.shields.io/badge/arXiv-RobustFlow-b31b1b)](https://arxiv.org/abs/2509.21834)
+[![PR Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/DEFENSE-SEU/RobustFlow/pulls)
 ![Github stars](https://img.shields.io/github/stars/DEFENSE-SEU/RobustFlow.svg)
 
 [Shengxiang Xu (徐圣翔)](https://xushengxianggg.github.io/)<img src="assets/SEU.png" alt="Logo" width="20">, &nbsp; &nbsp; 
