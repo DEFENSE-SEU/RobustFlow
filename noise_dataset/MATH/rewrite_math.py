@@ -1,312 +1,128 @@
-"""
-MATH Dataset Mathematical Problem Rewriting Module
+import json
+import os
+import time
+import re
+import openai
+import yaml
+from tqdm import tqdm
 
-This module provides functionality to rewrite mathematical problems from the MATH dataset using various
-transformation modes including requirements augmentation, paraphrasing, and noise injection.
-It supports multiple noise levels (light, moderate, heavy) to test model robustness on mathematical reasoning tasks.
-
-The module includes sophisticated protection mechanisms for mathematical content including LaTeX expressions,
-asy diagrams, and code blocks to ensure mathematical integrity during transformations.
-
-Author: RobustFlow Team
-Date: 2024
-Purpose: Generate augmented training data for mathematical reasoning models
-"""
-
-# Standard library imports
-import json          # For JSON file handling and data serialization
-import os           # For file system operations and path handling
-import time         # For adding delays between API calls to prevent rate limiting
-import re           # For regular expression pattern matching in text processing
-
-# Third-party imports
-import openai       # OpenAI API client for GPT model interactions
-import yaml         # For parsing YAML configuration files
-from tqdm import tqdm  # For displaying progress bars during batch processing
-
-# Configuration file path - points to the YAML config containing API settings
 config_path = "../../config/config2.yaml"
 
 def load_config(config_path):
-    """
-    Load and parse YAML configuration file.
-    
-    This function reads a YAML configuration file and returns the parsed configuration
-    dictionary. The configuration contains API keys, base URLs, and model settings
-    required for OpenAI API interactions.
-    
-    Args:
-        config_path (str): Path to the YAML configuration file
-        
-    Returns:
-        dict: Parsed configuration dictionary containing API settings
-        
-    Raises:
-        FileNotFoundError: If the configuration file doesn't exist
-        yaml.YAMLError: If the YAML file is malformed
-    """
-    # Open the configuration file in read mode with UTF-8 encoding
     with open(config_path, 'r', encoding='utf-8') as f:
-        # Parse the YAML content into a Python dictionary
         config = yaml.safe_load(f)
     return config
 
 def get_openai_client(config_path, model_name=None):
-    """
-    Initialize and return OpenAI client with specified model configuration.
-    
-    This function loads the configuration, selects the appropriate model settings,
-    and creates an OpenAI client instance with the correct API credentials and base URL.
-    
-    Args:
-        config_path (str): Path to the YAML configuration file
-        model_name (str, optional): Name of the model to use. If None, uses the first
-                                  available model in the configuration.
-        
-    Returns:
-        tuple: A tuple containing:
-            - client (openai.OpenAI): Configured OpenAI client instance
-            - model_config (dict): Configuration dictionary for the selected model
-            
-    Raises:
-        ValueError: If the specified model name is not found in the configuration
-        FileNotFoundError: If the configuration file doesn't exist
-    """
-    # Load configuration from YAML file
     config = load_config(config_path)
     
-    # If no model name specified, use the first available model
     if not model_name:
         model_name = list(config['models'].keys())[0]
     
-    # Validate that the requested model exists in the configuration
     if model_name not in config['models']:
         raise ValueError(f"Model '{model_name}' not found in configuration")
     
-    # Extract model-specific configuration
     model_config = config['models'][model_name]
 
-    # Create and configure OpenAI client with API credentials
     client = openai.OpenAI(
-        api_key=model_config['api_key'],    # API key for authentication
-        base_url=model_config['base_url']   # Base URL for API endpoint
+        api_key=model_config['api_key'],
+        base_url=model_config['base_url']
     )
     
-    # Return both client and model configuration
     return client, model_config
 
-# Initialize OpenAI client and model configuration at module level
 client, model_config = get_openai_client(config_path)
 
 
-# Mathematical content protection patterns - regex patterns to identify and protect mathematical expressions
-# These patterns ensure that LaTeX, asy diagrams, and code blocks are not modified during transformations
-
-# Pattern for code fences (```...```)
 FENCE_CODE = re.compile(r"```.*?```", re.S)
 
-# Pattern for asy diagram blocks ([asy]...[/asy])
 ASY_BLOCK  = re.compile(r"\[asy\].*?\[/asy\]", re.S | re.I)
 
-# Pattern for double dollar LaTeX expressions ($$...$$)
 LATEX_DOLLAR_DBL = re.compile(r"\$\$(?:\\.|[^$])*\$\$", re.S)
 
-# Pattern for LaTeX expressions in parentheses (\(...\))
 LATEX_PAREN      = re.compile(r"\\\((?:\\.|[^)])*?\\\)", re.S)
 
-# Pattern for LaTeX expressions in brackets (\[...\])
 LATEX_BRACKET    = re.compile(r"\\\[(?:\\.|[^\]])*?\\\]", re.S)
 
-# Pattern for single dollar LaTeX expressions ($...$) - matched last to avoid conflicts
 LATEX_DOLLAR     = re.compile(r"\$(?:\\.|[^\$])*\$", re.S)
 
-# Pattern for placeholder tokens used to mask protected content
 _PLACEHOLDER_RE = re.compile(r"<<<CB(\d+)>>>")
 
-# List of all protected patterns in order of precedence
 PROTECTED_PATTERNS = [
-    FENCE_CODE,        # Code fences first (highest priority)
-    ASY_BLOCK,         # Asy diagrams second
-    LATEX_DOLLAR_DBL,  # Double dollar LaTeX third
-    LATEX_BRACKET,     # Bracket LaTeX fourth
-    LATEX_PAREN,       # Parenthesis LaTeX fifth
-    LATEX_DOLLAR,      # Single dollar LaTeX last (lowest priority)
+    FENCE_CODE,
+    ASY_BLOCK,
+    LATEX_DOLLAR_DBL,
+    LATEX_BRACKET,
+    LATEX_PAREN,
+    LATEX_DOLLAR,
 ]
 
 def _collect_spans(text, patterns):
-    """
-    Collect and merge overlapping spans from multiple regex patterns.
-    
-    This function finds all matches from the given patterns in the text and merges
-    overlapping spans to create a list of non-overlapping protected regions.
-    
-    Args:
-        text (str): The input text to search for patterns
-        patterns (list): List of compiled regex patterns to search for
-        
-    Returns:
-        list: List of tuples (start, end) representing non-overlapping spans
-    """
-    # Initialize list to store all found spans
     spans = []
     
-    # Find all matches from each pattern
     for pat in patterns:
         for m in pat.finditer(text):
             spans.append((m.start(), m.end()))
     
-    # Sort spans by start position for merging
     spans.sort(key=lambda x: x[0])
     
-    # Merge overlapping spans
     merged = []
     for s, e in spans:
-        # If no merged spans yet or current span doesn't overlap with last merged span
         if not merged or s > merged[-1][1]:
             merged.append([s, e])
         else:
-            # Extend the last merged span to include current span
             merged[-1][1] = max(merged[-1][1], e)
     
-    # Convert back to tuples
     return [(s, e) for s, e in merged]
 
 def mask_protected(text):
-    """
-    Mask protected mathematical content with placeholder tokens.
-    
-    This function identifies mathematical expressions (LaTeX, asy diagrams, code blocks)
-    in the text and replaces them with placeholder tokens to protect them from
-    modification during text transformations.
-    
-    Args:
-        text (str): The input text containing mathematical expressions
-        
-    Returns:
-        tuple: A tuple containing:
-            - masked_text (str): Text with protected content replaced by placeholders
-            - masked_parts (list): List of original protected content chunks
-    """
-    # Find all protected spans in the text
     spans = _collect_spans(text, PROTECTED_PATTERNS)
     
-    # If no protected content found, return original text
     if not spans:
         return text, []
     
-    # Initialize lists for building masked text and storing original parts
     masked_parts = []
     out = []
     idx = 0
     
-    # Replace each protected span with a placeholder
     for i, (s, e) in enumerate(spans):
-        # Add text before the protected span
         out.append(text[idx:s])
         
-        # Create placeholder token
         placeholder = f"<<<CB{i}>>>"
         out.append(placeholder)
         
-        # Store the original protected content
         masked_parts.append(text[s:e])
         
-        # Update index to continue from end of current span
         idx = e
     
-    # Add remaining text after last protected span
     out.append(text[idx:])
     
-    # Join all parts and return
     return "".join(out), masked_parts
 
 def restore_protected(masked_text: str, masked_parts: list[str]) -> str:
-    """
-    Restore protected mathematical content from placeholder tokens.
-    
-    This function takes masked text with placeholder tokens and restores the original
-    mathematical expressions by replacing placeholders with their corresponding
-    protected content.
-    
-    Args:
-        masked_text (str): Text containing placeholder tokens like <<<CB0>>>
-        masked_parts (list[str]): List of original protected content chunks
-        
-    Returns:
-        str: Text with placeholders replaced by original protected content
-    """
     def _repl(m: re.Match) -> str:
-        """Helper function to replace placeholder with original content."""
-        # Extract the index from the placeholder token
         idx = int(m.group(1))
         
-        # Check if index is valid and return corresponding protected content
         if 0 <= idx < len(masked_parts):
             return masked_parts[idx]
         
-        # Invalid placeholder: return original placeholder (shouldn't happen with proper masking)
         return m.group(0)
     
-    # Replace all placeholders with their original content
     return _PLACEHOLDER_RE.sub(_repl, masked_text)
 
 def placeholders_ok(s: str, n: int) -> bool:
-    """
-    Validate that placeholder tokens are correctly formatted and complete.
-    
-    This function checks that all placeholder tokens in the text are properly formatted
-    and that the expected number of placeholders are present with consecutive indices.
-    
-    Args:
-        s (str): Text containing placeholder tokens to validate
-        n (int): Expected number of placeholders
-        
-    Returns:
-        bool: True if placeholders are valid, False otherwise
-    """
-    # Find all placeholder tokens in the text
     ids = _PLACEHOLDER_RE.findall(s)
     
     try:
-        # Convert string IDs to integers
         ids = list(map(int, ids))
     except ValueError:
-        # Invalid placeholder format
         return False
     
-    # Check that we have the expected number of placeholders
-    # and that they form a consecutive sequence starting from 0
     return len(ids) == n and sorted(ids) == list(range(n))
 
 def rewrite_prompt_with_openai(original_prompt, mode):
-    """
-    Rewrite a MATH dataset mathematical problem using OpenAI API based on specified transformation mode.
-    
-    This function takes an original mathematical problem and applies one of five transformation modes:
-    - 'requirements': Adds constraint-based instructions to strengthen mathematical problem requirements
-    - 'paraphrasing': Rewrites problem prose while preserving mathematical meaning and expressions
-    - 'light_noise': Adds light colloquial noise to problem prose while keeping math intact
-    - 'moderate_noise': Adds moderate colloquial noise to problem prose with increased complexity
-    - 'heavy_noise': Adds heavy colloquial noise to problem prose while maintaining recoverability
-    
-    The function uses sophisticated mathematical content protection to ensure LaTeX expressions,
-    asy diagrams, and code blocks remain unchanged during transformations.
-    
-    Args:
-        original_prompt (str): The original mathematical problem to be rewritten
-        mode (str): Transformation mode - one of 'requirements', 'paraphrasing',
-                   'light_noise', 'moderate_noise', or 'heavy_noise'
-        
-    Returns:
-        str: The rewritten problem with protected mathematical content restored
-        
-    Raises:
-        Exception: If API calls fail after retries, returns the original prompt
-    """
-    # Mask protected mathematical content (LaTeX, asy, code blocks) with placeholders
     masked_text, protected_chunks = mask_protected(original_prompt)
 
-    # Define system prompt for requirements mode - strengthens mathematical problem constraints
     system_prompt_requirements = r"""
 You are a **math problem constraint augmenter (MATH dataset version)**. For a given problem *P* (algebra/number theory/geometry/combinatorics), add **2–4 deterministic, process-only constraints** that enrich the reasoning **without changing the original answer**.
 
@@ -358,7 +174,6 @@ augmented problem text (including placeholders unchanged)
 </answer>
     """
 
-    # Define user prompt for requirements mode - template for constraint-based mathematical problem augmentation
     user_prompt_requirements = r"""
 You are given a **MATH dataset problem** $P$ (algebra / number theory / geometry / combinatorics).
 **Note:** $P$ may include protected placeholders such as `<<<CB0>>>`, `<<<CB1>>>`, … representing LaTeX/asy/code. **Copy these placeholders verbatim, keep them in the same positions/order/count, and do not modify text inside or immediately around them.**
@@ -397,7 +212,6 @@ No explanations, no solutions, and no extra text outside the tags. No code fence
 {{original_prompt}}
     """
 
-    # Define system prompt for paraphrasing mode - rewrites mathematical problem prose while preserving math
     system_prompt_paraphrasing = r"""
 You are a **MATH dataset problem rewriter**. Given a problem *P* (algebra / number theory / geometry / combinatorics), rewrite **only the natural-language prose** while **preserving the exact mathematical meaning and the numerical answer**. The goal is to change *form* (voice, sentence mood, order, register, nominalization) **without changing content**.
 
@@ -451,7 +265,6 @@ rewritten problem text here, preserving meaning and answer; placeholders unchang
 No explanations, no solutions, and no extra text outside the tags. No code fences/backticks.
     """
 
-    # Define user prompt for paraphrasing mode - template for mathematical problem prose paraphrasing
     user_prompt_paraphrasing = r"""
 You are given a **MATH dataset problem** $P$ (algebra / number theory / geometry / combinatorics).
 
@@ -487,7 +300,6 @@ No explanations, no solutions, and no extra text outside the tags. No code fence
 {{original_prompt}}
     """
 
-    # Define system prompt for light noise mode - adds minimal colloquial noise to mathematical problem prose
     system_prompt_light_noise = r"""
 You are a **lightly-colloquial prompt noiser** for **MATH dataset problems** (algebra / number theory / geometry / combinatorics). Given a problem *P*, inject **light-noise, human-like edits** into the **natural-language prose only** while keeping the task **recoverable** and the **numerical answer unchanged**.
 
@@ -565,7 +377,6 @@ From: “Let $a = .\overline{2} + .\overline{6}$. Find the reciprocal of $a$, ex
 To (light-noised): <answer>Let $a = .\overline{2} + .\overline{6}$ exactly as written. Now find the reciprocal $1/a$ and write it as a decimal—give that result.</answer>
     """
 
-    # Define user prompt for light noise mode - template for light noise injection in mathematical problem prose
     user_prompt_light_noise = r"""
 You are given a **MATH dataset problem** $P$ (algebra / number theory / geometry / combinatorics, plain text).
 
@@ -620,7 +431,6 @@ No explanations, no solutions, and no extra text outside the tags. No code fence
 {{original_prompt}}
     """
     
-    # Define system prompt for moderate noise mode - adds medium-level colloquial noise to mathematical problem prose
     system_prompt_moderate_noise = r"""
 You are a **moderately-colloquial prompt noiser** for **MATH dataset problems** (algebra / number theory / geometry / combinatorics). Given a problem *P*, inject **moderate-noise, human-like edits** into the **natural-language prose only** while keeping the task **recoverable** and the **numerical answer unchanged**.
 
@@ -699,7 +509,6 @@ From: “Let $a = .\overline{2} + .\overline{6}$. Find the reciprocal of $a$, ex
 To (moderate-noised): <answer>Set $a = .\overline{2} + .\overline{6}$ exactly as written. Now, find the reciprocal $1/a$ and write it as a decimal—report that number.</answer>
     """
     
-    # Define user prompt for moderate noise mode - template for moderate noise injection in mathematical problem prose
     user_prompt_moderate_noise = r"""
 You are given a **MATH dataset problem** $P$ (algebra / number theory / geometry / combinatorics, plain text).
 
@@ -754,7 +563,6 @@ No explanations, no solutions, and no extra text outside the tags. No code fence
 {{original_prompt}}
     """
 
-    # Define system prompt for heavy noise mode - adds maximum colloquial noise to mathematical problem prose
     system_prompt_heavy_noise = r"""
 You are an **ultra-colloquial prompt noiser** for **MATH dataset problems** (algebra / number theory / geometry / combinatorics). Given a problem *P*, inject **high-noise, human-like edits** into the **natural-language prose only** while keeping the task **recoverable** and the **numerical answer unchanged**.
 
@@ -833,7 +641,6 @@ From: “Let \$a = .\overline{2} + .\overline{6}\$. Find the reciprocal of \$a\$
 To (noised): <answer>ngl this is tiny but neat: set $a = .\overline{2} + .\overline{6}$ (yep, exactly that form). Don’t change the notation. Then, what’s the reciprocal $1/a$ written as a decimal—give that, clean and simple. 🙂</answer>
     """
 
-    # Define user prompt for heavy noise mode - template for heavy noise injection in mathematical problem prose
     user_prompt_heavy_noise = r"""
 You are given a **MATH dataset problem** $P$ (algebra / number theory / geometry / combinatorics, plain text).
 
@@ -889,7 +696,6 @@ No explanations, no solutions, and no extra text outside the tags. No code fence
 {{original_prompt}}
     """
     
-    # Replace template placeholder with actual masked text in all user prompts
     user_prompt_requirements = user_prompt_requirements.replace(
         "{{original_prompt}}", masked_text
     )
@@ -906,7 +712,6 @@ No explanations, no solutions, and no extra text outside the tags. No code fence
         "{{original_prompt}}", masked_text
     )
 
-    # Select appropriate system and user prompts based on transformation mode
     if mode == "requirements":
         system_prompt = system_prompt_requirements
         user_prompt = user_prompt_requirements
@@ -923,195 +728,115 @@ No explanations, no solutions, and no extra text outside the tags. No code fence
         system_prompt = system_prompt_heavy_noise
         user_prompt = user_prompt_heavy_noise
 
-    # Determine if the mode is a noise injection mode for temperature setting
     is_noise = mode in {"light_noise", "moderate_noise", "heavy_noise"}
-    # Use higher temperature (0.7) for noise modes to encourage creativity,
-    # lower temperature (0.0) for deterministic modes like requirements and paraphrasing
     temperature = 0.7 if is_noise else 0.0
 
-    # Attempt API call with retry mechanism (up to 2 attempts)
     for attempt in range(2):
         try:
-            # Make API call to OpenAI GPT model with selected prompts and temperature
             response = client.chat.completions.create(
-                model="gpt-4o-mini",  # Use GPT-4o-mini model for cost efficiency
+                model="gpt-4o-mini",
                 messages=[
-                    {"role": "system", "content": system_prompt},  # System instructions
-                    {"role": "user", "content": user_prompt},      # User request with masked text
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
                 ],
-                temperature=temperature,  # Temperature setting based on mode
+                temperature=temperature,
             )
-            # Extract and clean the rewritten content from API response
             content = response.choices[0].message.content.strip()
         except Exception as e:
-            # Handle API errors with retry logic
             if attempt == 0:
                 print(f"API call error, retrying: {e}")
             else:
                 print(f"API call still failed after retry: {e}")
-                # Return original prompt if all retries fail
                 return original_prompt
 
-    # Extract rewritten content from API response using regex
     m = re.search(r"<answer>(.*?)</answer>", content, re.S | re.I)
     rewritten_masked = (m.group(1) if m else content).strip()
 
-    # Validate that all placeholders are correctly preserved
     if not placeholders_ok(rewritten_masked, len(protected_chunks)):
         return original_prompt
 
-    # Restore protected mathematical content from placeholders
     restored = restore_protected(rewritten_masked, protected_chunks)
     return restored
 
 
 def process_jsonl_file(input_file, output_file, mode):
-    """
-    Process a JSONL file containing MATH dataset mathematical problems and rewrite them using specified mode.
-    
-    This function reads a JSONL file where each line contains a JSON object with a 'problem' field.
-    The problem field contains a mathematical problem with LaTeX expressions, asy diagrams, and code blocks.
-    The function extracts the problem text, rewrites it using the specified transformation mode,
-    and updates the JSON object with the rewritten problem.
-    
-    Args:
-        input_file (str): Path to the input JSONL file containing original mathematical problems
-        output_file (str): Path to the output JSONL file for rewritten problems
-        mode (str): Transformation mode - one of 'requirements', 'paraphrasing',
-                   'light_noise', 'moderate_noise', or 'heavy_noise'
-        
-    Returns:
-        None: Writes processed data to output file
-        
-    Note:
-        The function expects MATH-style format with 'problem' field containing the mathematical problem.
-        Other formats are skipped with warnings.
-    """
-    # Check if input file exists before processing
     if not os.path.exists(input_file):
         print(f"Error: Input File {input_file} not exists.")
         return
 
-    # Read all lines from the input JSONL file
     with open(input_file, "r", encoding="utf-8") as f:
         lines = f.readlines()
 
-    # Initialize list to store processed data entries
     processed_data = []
 
-    # Process each line in the input file with progress bar
     for i, line in enumerate(tqdm(lines, desc="Processing Progress")):
-        # Strip whitespace from the current line
         s = line.strip()
         
-        # Skip empty lines
         if not s:
             continue
             
         try:
-            # Parse JSON object from current line
             data = json.loads(s)
         except json.JSONDecodeError as e:
-            # Handle JSON parsing errors for individual lines
             print(f"[Skip] Line {i+1} JSON parsing failed: {e}")
             continue
 
-        # Extract problem field from the JSON data
         p = data.get("problem", None)
         
-        # Process the problem if it exists and is a non-empty string
         if isinstance(p, str) and p.strip():
-            # Use the original problem text directly
             original_problem = p
             
             try:
-                # Call the OpenAI rewriter with the extracted problem and specified mode
                 new_problem = rewrite_prompt_with_openai(original_problem, mode)
             except Exception as e:
-                # Handle API call errors for individual problems
                 print(f"[Error] Line {i+1} API call failed: {e}")
-                # Use original problem if API call fails
                 new_problem = original_problem
 
-            # Update the data object with the rewritten problem
             data["problem"] = new_problem
         else:
-            # Skip lines that don't have a processable 'problem' field
             print(f"[Warning] Line {i+1} missing processable 'problem' field, keeping original.")
 
-        # Add processed data entry to the results list
         processed_data.append(data)
         
-        # Add small delay to prevent API rate limiting
         time.sleep(0.1)
 
-    # Write all processed data to the output JSONL file
     with open(output_file, "w", encoding="utf-8") as f:
         for obj in processed_data:
-            # Write each processed data entry as a JSON line
             f.write(json.dumps(obj, ensure_ascii=False) + "\n")
 
-    # Print completion message with processing statistics
     print(f"Processing completed! Processed {len(processed_data)} data entries")
 
 
 def main():
-    """
-    Main function to process MATH dataset with all transformation modes.
-    
-    This function orchestrates the complete processing pipeline by:
-    1. Defining input and output file paths for each transformation mode
-    2. Processing the original MATH dataset with each of the 5 transformation modes:
-       - Requirements: Strengthens mathematical problem constraints and requirements
-       - Paraphrasing: Rewrites problem prose while preserving mathematical expressions
-       - Light Noise: Adds minimal colloquial noise to problem prose
-       - Moderate Noise: Adds medium-level colloquial noise to problem prose
-       - Heavy Noise: Adds maximum colloquial noise to problem prose
-    
-    The function processes the same input file multiple times, generating different
-    augmented versions for robustness testing of mathematical reasoning models.
-    
-    Returns:
-        None: Creates multiple output files with transformed mathematical problems
-    """
-    # Define input file path (original MATH dataset)
     input_file = "math_original.jsonl"
     
-    # Define output file paths for each transformation mode
     requirements_output_file = "math_requirements.jsonl"
     paraphrasing_output_file = "math_paraphrasing.jsonl"
     light_noise_output_file = "math_light_noise.jsonl"
     moderate_noise_output_file = "math_moderate_noise.jsonl"
     heavy_noise_output_file = "math_heavy_noise.jsonl"
 
-    # Print input file information
     print(f"Input File: {input_file}")
     
-    # Process with requirements augmentation mode
     print("Requirement Augmentation:")
     process_jsonl_file(input_file, requirements_output_file, "requirements")
     print(f"Output File: {requirements_output_file}")
 
-    # Process with paraphrasing mode
     print("Paraphrasing:")
     process_jsonl_file(input_file, paraphrasing_output_file, "paraphrasing")
     print(f"Output File: {paraphrasing_output_file}")
 
-    # Process with light noise injection mode
     print("Light Noise:")
     process_jsonl_file(input_file, light_noise_output_file, "light_noise")
     print(f"Output File: {light_noise_output_file}")
 
-    # Process with moderate noise injection mode
     print("Moderate Noise:")
     process_jsonl_file(input_file, moderate_noise_output_file, "moderate_noise")
     print(f"Output File: {moderate_noise_output_file}")
 
-    # Process with heavy noise injection mode
     print("Heavy Noise:")
     process_jsonl_file(input_file, heavy_noise_output_file, "heavy_noise")
     print(f"Output File: {heavy_noise_output_file}")
 
-# Script entry point - execute main function when run directly
 if __name__ == "__main__":
     main()
