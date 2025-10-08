@@ -55,14 +55,11 @@ By training on sets of synonymous task descriptions, RobustFlow boosts workflow 
 ## Citation
 If you use RobustFlow in your research, please cite our paper:
 ```
-@misc{xu2025robustflowrobustagenticworkflow,
-      title={RobustFlow: Towards Robust Agentic Workflow Generation}, 
-      author={Shengxiang Xu and Jiayi Zhang and Shimin Di and Yuyu Luo and Liang Yao and Hanmo Liu and Jia Zhu and Fan Liu and Min-Ling Zhang},
-      year={2025},
-      eprint={2509.21834},
-      archivePrefix={arXiv},
-      primaryClass={cs.MA},
-      url={https://arxiv.org/abs/2509.21834}, 
+@article{xu2025robustflow,
+  title={RobustFlow: Towards Robust Agentic Workflow Generation},
+  author={Xu, Shengxiang and Zhang, Jiayi and Di, Shimin and Luo, Yuyu and Yao, Liang and Liu, Hanmo and Zhu, Jia and Liu, Fan and Zhang, Min-Ling},
+  journal={arXiv preprint arXiv:2509.21834},
+  year={2025}
 }
 ```
 
