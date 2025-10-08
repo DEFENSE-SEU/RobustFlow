@@ -25,8 +25,6 @@
 
 > If you encounter any difficulties in using or reproducing the code, please get in touch with me directly (Email: xushx@seu.edu.cn, Wechat: 13270628738).
 
-**The code will be updated before 8th October.**
-
 ## Introduction
 
 Welcome to the official repository of our paper "RobustFlow: Towards Robust Agentic Workflow Generation"!
