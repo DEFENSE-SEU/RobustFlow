@@ -46,11 +46,17 @@ By training on sets of synonymous task descriptions, RobustFlow boosts workflow 
 ## Quick Start
 
 1. Setup the Python environment:
-   
+
     ```python
     conda create -n robustflow python=3.9
     pip install -r requirements.txt
     ```
+
+2. Data Preparation
+
+    You can download our prepared datasets or reproduce them locally.
+
+    
 
 ## Citation
 If you use RobustFlow in your research, please cite our paper:
