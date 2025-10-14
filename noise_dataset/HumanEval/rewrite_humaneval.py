@@ -227,6 +227,17 @@ Hard rules (recovery & semantics)
 - **Preserve meaning, scope, and specificity.** Do **not** add/remove constraints, examples, or new technical content.
 - **Recoverability:** Include at least **one clean, unambiguous full sentence** summarizing the task and at least **one clean mention** of every critical concept/identifier used by the task.
 
+**Signature & code immutability (strict)**
+- Do **not** modify anything outside the docstring — **byte-for-byte**. This includes:
+  - Function name, parameter list (names, order, defaults), type hints, return annotation, decorators, indentation/spacing, and surrounding code/comments.
+  - Example: if the input has `def truncate_number(number: float) -> float:`, that exact line must remain **identical**.
+- Do **not** insert or remove any lines before/after the docstring, and do not alter blank lines, imports, or any other code.
+- If the item is provided within a HumanEval-style JSON, you must **not** change `entry_point`, `prompt` code outside the docstring, `canonical_solution`, or `test` content in any way.
+
+**Self-check before output**
+- Validate that the function signature line(s) in your output match the input **exactly** (name, params, types, return type, spacing).
+- Validate that only the prose inside the triple quotes changed.
+
 Intensity & limits (mild profile)
 - Target **20–40%** tokens noised.
 - Use **2–4** noise types overall; ensure **≥50%** of edits are typos/misspellings/keyboard slips.
@@ -243,22 +254,22 @@ Intensity & limits (mild profile)
 ## Calibrated example (do not echo at runtime)
 
 From:
-def incr\_list(l: list):
+def incr_list(l: list):
 """Return list with elements incremented by 1.
-\>>> incr\_list(\[1, 2, 3])
-\[2, 3, 4]
-\>>> incr\_list(\[5, 3, 5, 2, 3, 3, 9, 0, 123])
-\[6, 4, 6, 3, 4, 4, 10, 1, 124]
+>>> incr_list([1, 2, 3])
+[2, 3, 4]
+>>> incr_list([5, 3, 5, 2, 3, 3, 9, 0, 123])
+[6, 4, 6, 3, 4, 4, 10, 1, 124]
 """
 
 To: 
 <answer>
-def incr\_list(l: list):
+def incr_list(l: list):
 """So, uh, just return a list where every element’s bumped by 1, okay? You know, nothing crazy. It’s really simple.
-\>>> incr\_list(\[1, 2, 3])
-\[2, 3, 4]
-\>>> incr\_list(\[5, 3, 5, 2, 3, 3, 9, 0, 123])
-\[6, 4, 6, 3, 4, 4, 10, 1, 124]
+>>> incr_list([1, 2, 3])
+[2, 3, 4]
+>>> incr_list([5, 3, 5, 2, 3, 3, 9, 0, 123])
+[6, 4, 6, 3, 4, 4, 10, 1, 124]
 """ 
 </answer>
     '''
@@ -272,7 +283,9 @@ Strict preservation:
 - Keep the opening/closing `"""` and indentation **byte-for-byte**.
 - **Do not noise doctests/examples** inside the docstring (e.g., lines starting with `>>>` and their output lines) — keep them verbatim and in the same order.
 - Preserve technical literals exactly in the prose: inline code/backticks, identifiers (function/parameter names), regexes, numbers/units, file paths, URLs, and special tokens like `<...>`, `{...}`, `$...`.
+- **Function signature immutability:** the function name, parameter names/order/defaults, type hints, and return annotation must be **identical** to the input — **byte-for-byte**. For example, `def truncate_number(number: float) -> float:` must remain exactly the same.
 - Do not translate or change scope/specificity; do not add/remove constraints or examples.
+- If the item is part of a HumanEval JSON, do **not** change `entry_point`, or any code in `prompt` outside the docstring, and do **not** alter `canonical_solution` or `test`.
 
 Noise profile (mild):
 - Intensity: target **20–40%** tokens noised (≤45% if still readable).
@@ -319,6 +332,17 @@ Hard rules (recovery & semantics)
 - **Protect verbatim technical literals in prose**: inline code/backticks, identifiers (function/parameter names), regexes, numbers/units, file paths, URLs, and special tokens like `<...>`, `{...}`, `$...` must be byte-for-byte unchanged.
 - **Recoverability:** Include at least **one clean, unambiguous full sentence** summarizing the task and at least **one clean mention** of every critical concept/identifier used by the task.
 
+**Signature & code immutability (strict)**
+- Do **not** modify anything outside the docstring — **byte-for-byte**. This includes:
+  - Function name, parameter list (names, order, defaults), type hints, return annotation, decorators, indentation/spacing, and surrounding code/comments.
+  - Example: if the input has `def truncate_number(number: float) -> float:`, that exact line must remain **identical**.
+- Do **not** insert or remove any lines before/after the docstring, and do not alter blank lines, imports, or any other code.
+- If the item is provided within a HumanEval-style JSON, you must **not** change `entry_point`, `prompt` code outside the docstring, `canonical_solution`, or `test` content in any way.
+
+**Self-check before output**
+- Validate that the function signature line(s) in your output match the input **exactly** (name, params, types, return type, spacing).
+- Validate that only the prose inside the triple quotes changed.
+
 Intensity & limits (moderate profile)
 - Target **40–60%** tokens noised.
 - Use **3–5** noise types overall; ensure **≥60%** of edits are typos/misspellings/keyboard slips.
@@ -335,22 +359,22 @@ Intensity & limits (moderate profile)
 ## Calibrated example (do not echo at runtime)
 
 From:
-def incr\_list(l: list):
+def incr_list(l: list):
 """Return list with elements incremented by 1.
-\>>> incr\_list(\[1, 2, 3])
-\[2, 3, 4]
-\>>> incr\_list(\[5, 3, 5, 2, 3, 3, 9, 0, 123])
-\[6, 4, 6, 3, 4, 4, 10, 1, 124]
+>>> incr_list([1, 2, 3])
+[2, 3, 4]
+>>> incr_list([5, 3, 5, 2, 3, 3, 9, 0, 123])
+[6, 4, 6, 3, 4, 4, 10, 1, 124]
 """
 
 To: 
 <answer>
-def incr\_list(l: list):
+def incr_list(l: list):
 """Okay, so like, return a list where everything’s just +1, simple enough, right? Don’t mess with the original list tho! 🙏 Just make a new one. One clean sentence: Return a list with each element incremented by 1.
-\>>> incr\_list(\[1, 2, 3])
-\[2, 3, 4]
-\>>> incr\_list(\[5, 3, 5, 2, 3, 3, 9, 0, 123])
-\[6, 4, 6, 3, 4, 4, 10, 1, 124]
+>>> incr_list([1, 2, 3])
+[2, 3, 4]
+>>> incr_list([5, 3, 5, 2, 3, 3, 9, 0, 123])
+[6, 4, 6, 3, 4, 4, 10, 1, 124]
 """ 
 </answer>
     '''
@@ -364,6 +388,8 @@ Strict preservation:
 - Keep the opening/closing `"""` and indentation **byte-for-byte**.
 - **Do not noise doctests/examples** inside the docstring (e.g., lines starting with `>>>` and their output lines) — keep them verbatim and in the same order.
 - Preserve technical literals exactly in the prose: inline code/backticks, identifiers (function/parameter names), regexes, numbers/units, file paths, URLs, and special tokens like `<...>`, `{...}`, `$...`.
+- **Function signature immutability:** the function name, parameter names/order/defaults, type hints, and return annotation must be **identical** to the input — **byte-for-byte**. For example, `def truncate_number(number: float) -> float:` must remain exactly the same.
+- If the item is part of a HumanEval JSON, do **not** change `entry_point`, or any code in `prompt` outside the docstring, and do **not** alter `canonical_solution` or `test`.
 - Do not translate or change scope/specificity; do not add/remove constraints or examples.
 
 Noise profile (moderate):
@@ -416,6 +442,17 @@ Hard rules (recovery & semantics)
 - **Protect verbatim technical literals in prose:** inline code/backticks, identifiers (function/parameter names), regexes, numbers/units, file paths, URLs, and special tokens (`<...>`, `{...}`, `$...`) must be byte-for-byte unchanged.
 - **Recoverability:** include at least **one clean, unambiguous full sentence** summarizing the task and at least **one clean mention** of every critical concept/identifier used by the task.
 
+**Signature & code immutability (strict)**
+- Do **not** modify anything outside the docstring — **byte-for-byte**. This includes:
+  - Function name, parameter list (names, order, defaults), type hints, return annotation, decorators, indentation/spacing, and any surrounding code/comments.
+  - Example: if the input has `def truncate_number(number: float) -> float:`, that exact line must remain **identical**.
+- Do **not** insert or remove any lines before/after the docstring, and do not alter blank lines, imports, or any other code.
+- If the item is provided in a HumanEval-style JSON, you must **not** change `entry_point`, `prompt` code outside the docstring, `canonical_solution`, or `test` content in any way.
+
+**Self-check before output**
+- Confirm the function signature line(s) in your output match the input **exactly** (name, params, types, return type, spacing).
+- Confirm that only the prose **between** the triple quotes changed; doctests/examples remain verbatim and in the same order.
+
 Intensity & limits (strong profile)
 - Target **60–80%** tokens noised; allow up to **85%** if still readable.
 - Use **4–6** noise types overall; you may stack **≤3 edits per token** (e.g., typo + casing + elongation).
@@ -432,22 +469,22 @@ Intensity & limits (strong profile)
 ## Calibrated example (do not echo at runtime)
 
 From:
-def incr\_list(l: list):
+def incr_list(l: list):
 """Return list with elements incremented by 1.
-\>>> incr\_list(\[1, 2, 3])
-\[2, 3, 4]
-\>>> incr\_list(\[5, 3, 5, 2, 3, 3, 9, 0, 123])
-\[6, 4, 6, 3, 4, 4, 10, 1, 124]
+>>> incr_list([1, 2, 3])
+[2, 3, 4]
+>>> incr_list([5, 3, 5, 2, 3, 3, 9, 0, 123])
+[6, 4, 6, 3, 4, 4, 10, 1, 124]
 """
 
 To: 
 <answer>
-def incr\_list(l: list):
+def incr_list(l: list):
 """uhh sooo like, make a list that is the same order but each value is +1, ok? reaaally basic lol — keep it a NEW list, not messin’ the input 🙏 One clean sentence: Return a list with each element incremented by 1.
-\>>> incr\_list(\[1, 2, 3])
-\[2, 3, 4]
-\>>> incr\_list(\[5, 3, 5, 2, 3, 3, 9, 0, 123])
-\[6, 4, 6, 3, 4, 4, 10, 1, 124]
+>>> incr_list([1, 2, 3])
+[2, 3, 4]
+>>> incr_list([5, 3, 5, 2, 3, 3, 9, 0, 123])
+[6, 4, 6, 3, 4, 4, 10, 1, 124]
 """ 
 </answer>
     '''
@@ -461,6 +498,8 @@ Strict preservation:
 - Keep the opening/closing `"""` and indentation **byte-for-byte**.
 - **Do not noise doctests/examples** inside the docstring (e.g., lines starting with `>>>` and their output lines) — keep them verbatim and in the same order.
 - Preserve technical literals exactly in the prose: inline code/backticks, identifiers (function/parameter names), regexes, numbers/units, file paths, URLs, and special tokens like `<...>`, `{...}`, `$...`.
+- **Function signature immutability:** the function name, parameter names/order/defaults, type hints, and return annotation must be **identical** to the input — **byte-for-byte**. For example, `def truncate_number(number: float) -> float:` must remain exactly the same.
+- If the item is part of a HumanEval JSON, do **not** change `entry_point`, or any code in `prompt` outside the docstring, and do **not** alter `canonical_solution` or `test`.
 - Do not translate or change scope/specificity; do not add/remove constraints or examples.
 
 Noise profile (strong):
