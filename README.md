@@ -47,7 +47,7 @@ By training on sets of synonymous task descriptions, RobustFlow boosts workflow 
 
 1. Setup the Python environment:
 
-    ```python
+    ```bash
     conda create -n robustflow python=3.9
     pip install -r requirements.txt
     ```
@@ -56,7 +56,22 @@ By training on sets of synonymous task descriptions, RobustFlow boosts workflow 
 
     You can download our [prepared datasets](https://drive.google.com/file/d/1OFcKegpBPSEdxy217tZHj2o9QWwnN6tJ/view?usp=drive_link) or reproduce them locally.
 
+    - Place the official original file in the dataset folder (example: `noise_dataset/DROP/drop_original.jsonl`).
     
+    - Run the rewrite script in that folder:
+    
+      ```python
+      cd noise_dataset/DROP/
+      python rewrite_drop.py
+      ```
+    
+      This generates:
+    
+      - `drop_paraphrasing.jsonl`
+      - `drop_requirements.jsonl`
+      - `drop_light_noise.jsonl`
+      - `drop_moderate_noise.jsonl`
+      - `drop_heavy_noise.jsonl`
 
 ## Citation
 If you use RobustFlow in your research, please cite our paper:
