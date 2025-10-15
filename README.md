@@ -73,7 +73,14 @@ By training on sets of synonymous task descriptions, RobustFlow boosts workflow 
       - `drop_moderate_noise.jsonl`
       - `drop_heavy_noise.jsonl`
 
+3. Baseline Evaluation
+
+   Clone the official repositories of [AFlow](https://github.com/FoundationAgents/AFlow), [ScoreFlow](https://github.com/Gen-Verse/ScoreFlow) and [Flow](https://github.com/tmllab/2025_ICLR_FLOW) into `AFlow/`, `Scoreflow/` and `Flow/`, and run each project strictly following its README to reproduce the baseline results as-is.
+
+   
+
 ## Citation
+
 If you use RobustFlow in your research, please cite our paper:
 ```
 @article{xu2025robustflow,
