@@ -76,6 +76,19 @@ By training on sets of synonymous task descriptions, RobustFlow boosts workflow 
 3. Baseline Evaluation
 
    Clone the official repositories of [AFlow](https://github.com/FoundationAgents/AFlow), [ScoreFlow](https://github.com/Gen-Verse/ScoreFlow) and [Flow](https://github.com/tmllab/2025_ICLR_FLOW) into `AFlow/`, `Scoreflow/` and `Flow/`, and run each project strictly following its README to reproduce the baseline results as-is.
+   
+   - **AFlow Evaluation**
+   
+     ```bash
+     cd evaluate/
+     bash infer_aflow.sh
+     ```
+   
+     
+   
+   - **ScoreFlow Evaluation**
+   
+   - **Flow Evaluation**
 
 
 4. Additional case studies are available in `samples/` for qualitative analysis.
