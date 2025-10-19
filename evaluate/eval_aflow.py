@@ -5,15 +5,40 @@ import sys
 import os
 from graph_evaluator import t_eval_nodes, t_eval_graph, SentenceTransformer
 from openai import OpenAI
+import yaml
 
+config_path = "../../config/config2.yaml"
 
-client = OpenAI(
-    api_key="sk-XilSri6YnWxgj96h3rvrHjAWl4Qly8GNu9ZWwfxpwdxN0plk",
-    base_url="https://api.linkapi.org/v1",
-)
+def load_config(config_path):
+    """Load YAML configuration file and return configuration dictionary"""
+    with open(config_path, 'r', encoding='utf-8') as f:
+        config = yaml.safe_load(f)
+    return config
+
+def get_openai_client(config_path, model_name=None):
+    """Get OpenAI client and model configuration based on config file"""
+    config = load_config(config_path)
+    
+    if not model_name:
+        model_name = list(config['models'].keys())[0]
+    
+    if model_name not in config['models']:
+        raise ValueError(f"Model '{model_name}' not found in configuration")
+    
+    model_config = config['models'][model_name]
+
+    client = OpenAI(
+        api_key=model_config['api_key'],
+        base_url=model_config['base_url']
+    )
+    
+    return client, model_config
+
+client, model_config = get_openai_client(config_path)
 
 
 def gen_prompt(graph_path, prompt_path):
+    """Generate prompt for analyzing code structure and converting to graph structure"""
     with open(graph_path, 'r') as f:
         graph_content = f.read()
 
@@ -59,6 +84,7 @@ Example format:
     
 
 def gen_answer(PROMPT):
+    """Call GPT model to generate graph structure analysis results"""
     try:
         completion = client.chat.completions.create(
             model = "gpt-4o-mini",
@@ -93,6 +119,7 @@ def gen_answer(PROMPT):
         return f"Error when calling LLM: {str(e)}"
 
 def extract_graph_from_response(response):
+    """Extract graph structure information from GPT response"""
     node_pattern = re.compile(r'"([^"]+)",')
     node_matches = node_pattern.findall(response)
     node_workflow = [match.strip() for match in node_matches]
@@ -114,15 +141,17 @@ def extract_graph_from_response(response):
     return workflow
 
 def get_scoreflow(original_path, prompt_path):
+    """Get ScoreFlow workflow structure"""
     prompt = gen_prompt(original_path, prompt_path)
     answer = gen_answer(prompt)
     workflow = extract_graph_from_response(answer)
     return workflow
 
 def evaluate_variant_group(original_path, requirements_path, paraphrasing_path, light_noise_path, moderate_noise_path, heavy_noise_path, prompt_path):
+    """Evaluate workflow structure similarity for a group of variant datasets"""
     model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
 
-    # 获取 ScoreFlow 工作流
+    # Get ScoreFlow workflows
     workflow_original = get_scoreflow(original_path, prompt_path)
     workflow_requirements = get_scoreflow(requirements_path, prompt_path)
     workflow_paraphrasing = get_scoreflow(paraphrasing_path, prompt_path)
@@ -143,7 +172,7 @@ def evaluate_variant_group(original_path, requirements_path, paraphrasing_path, 
     print("-----------------------------------------------------------")
     print(workflow_heavy_noise)
 
-    # 计算节点 F1 分数
+    # Calculate node F1 scores
     original_nodes_f1 = t_eval_nodes(workflow_original, workflow_original, model)["f1_score"]
     requirements_nodes_f1 = t_eval_nodes(workflow_requirements, workflow_original, model)["f1_score"]
     paraphrasing_nodes_f1 = t_eval_nodes(workflow_paraphrasing, workflow_original, model)["f1_score"]
@@ -151,7 +180,7 @@ def evaluate_variant_group(original_path, requirements_path, paraphrasing_path, 
     moderate_noise_nodes_f1 = t_eval_nodes(workflow_moderate_noise, workflow_original, model)["f1_score"]
     heavy_noise_nodes_f1 = t_eval_nodes(workflow_heavy_noise, workflow_original, model)["f1_score"]
 
-    # 计算图结构 F1 分数
+    # Calculate graph structure F1 scores
     original_graph_f1 = t_eval_graph(workflow_original, workflow_original, model)["f1_score"]
     requirements_graph_f1 = t_eval_graph(workflow_requirements, workflow_original, model)["f1_score"]
     paraphrasing_graph_f1 = t_eval_graph(workflow_paraphrasing, workflow_original, model)["f1_score"]
@@ -202,72 +231,141 @@ light_graph_scores = []
 moderate_graph_scores = []
 heavy_graph_scores = []
 
-if __name__ == "__main__":
-    prompt_path = "../AFlow/workspace/MBPP/workflows/template/op_prompt.py"
+def parse_best_results(file_path):
+    """Parse best.txt file and extract best result paths for each dataset"""
+    datasets = {}
+    current_dataset = None
+    
+    with open(file_path, 'r', encoding='utf-8') as f:
+        for line in f:
+            line = line.strip()
+            
+            if line.startswith('[INFO] Entering task directory:'):
+                dataset_name = line.split('\\')[-1]
+                current_dataset = dataset_name
+                datasets[current_dataset] = {}
+                
+            elif line.startswith('[BEST]'):
+                parts = line.split('/round ')
+                if len(parts) >= 2:
+                    path_part = parts[0].replace('[BEST] ', '')
+                    round_part = parts[1].split(' ')[0]
+                    
+                    graph_path = path_part.replace('\\results.json', f'\\round_{round_part}\\graph.py')
+                    
+                    path_segments = graph_path.split('\\')
+                    noise_type = None
+                    for segment in path_segments:
+                        if 'original' in segment:
+                            noise_type = 'original'
+                            break
+                        elif 'requirements' in segment:
+                            noise_type = 'requirements'
+                            break
+                        elif 'paraphrasing' in segment:
+                            noise_type = 'paraphrasing'
+                            break
+                        elif 'light_noise' in segment:
+                            noise_type = 'light_noise'
+                            break
+                        elif 'moderate_noise' in segment:
+                            noise_type = 'moderate_noise'
+                            break
+                        elif 'heavy_noise' in segment:
+                            noise_type = 'heavy_noise'
+                            break
+                    
+                    if noise_type and current_dataset:
+                        datasets[current_dataset][noise_type] = graph_path
+    
+    return datasets
 
-    original_path1 = "aflow_scripts/MBPP/mbpp_original_1/round_8/graph.py"
-    # requirements_path1 = "aflow_scripts/MBPP/mbpp_requirements_1/round_3/graph.py"
-    # paraphrasing_path1 = "aflow_scripts/MBPP/mbpp_paraphrasing_1/round_4/graph.py"
-    light_noise_path1 = "aflow_scripts/MBPP/mbpp_light_noise_1/round_6/graph.py"
-    moderate_noise_path1 = "aflow_scripts/MBPP/mbpp_moderate_noise_1/round_7/graph.py"
-    # heavy_noise_path1 = "aflow_scripts/MBPP/mbpp_heavy_noise_1/round_3/graph.py"
-    requirements_path1 = "aflow_scripts/MBPP/mbpp_light_noise_1/round_6/graph.py"
-    paraphrasing_path1 = "aflow_scripts/MBPP/mbpp_light_noise_1/round_6/graph.py"
-    heavy_noise_path1 = "aflow_scripts/MBPP/mbpp_light_noise_1/round_6/graph.py"
-    evaluate_variant_group(original_path1, requirements_path1, paraphrasing_path1, light_noise_path1, moderate_noise_path1, heavy_noise_path1, prompt_path)
+def clear_score_arrays():
+    """Clear all score storage arrays"""
+    global ori_node_scores, req_node_scores, para_node_scores, light_node_scores, moderate_node_scores, heavy_node_scores
+    global ori_graph_scores, req_graph_scores, para_graph_scores, light_graph_scores, moderate_graph_scores, heavy_graph_scores
+    
+    ori_node_scores.clear()
+    req_node_scores.clear()
+    para_node_scores.clear()
+    light_node_scores.clear()
+    moderate_node_scores.clear()
+    heavy_node_scores.clear()
+    
+    ori_graph_scores.clear()
+    req_graph_scores.clear()
+    para_graph_scores.clear()
+    light_graph_scores.clear()
+    moderate_graph_scores.clear()
+    heavy_graph_scores.clear()
 
-    original_path2 = "aflow_scripts/MBPP/mbpp_original_2/round_14/graph.py"
-    # requirements_path2 = "aflow_scripts/MBPP/mbpp_requirements_2/round_20/graph.py"
-    # paraphrasing_path2 = "aflow_scripts/MBPP/mbpp_paraphrasing_2/round_7/graph.py"
-    light_noise_path2 = "aflow_scripts/MBPP/mbpp_light_noise_2/round_2/graph.py"
-    moderate_noise_path2 = "aflow_scripts/MBPP/mbpp_moderate_noise_2/round_14/graph.py"
-    # heavy_noise_path2 = "aflow_scripts/MBPP/mbpp_heavy_noise_2/round_15/graph.py"
-    requirements_path2 = "aflow_scripts/MBPP/mbpp_light_noise_1/round_6/graph.py"
-    paraphrasing_path2 = "aflow_scripts/MBPP/mbpp_light_noise_1/round_6/graph.py"
-    heavy_noise_path2 = "aflow_scripts/MBPP/mbpp_light_noise_1/round_6/graph.py"
-    evaluate_variant_group(original_path2, requirements_path2, paraphrasing_path2, light_noise_path2, moderate_noise_path2, heavy_noise_path2, prompt_path)
-
-    original_path3 = "aflow_scripts/MBPP/mbpp_original_3/round_10/graph.py"
-    # requirements_path3 = "aflow_scripts/MBPP/mbpp_requirements_3/round_10/graph.py"
-    # paraphrasing_path3 = "aflow_scripts/MBPP/mbpp_paraphrasing_3/round_18/graph.py"
-    light_noise_path3 = "aflow_scripts/MBPP/mbpp_light_noise_3/round_12/graph.py"
-    moderate_noise_path3 = "aflow_scripts/MBPP/mbpp_moderate_noise_3/round_17/graph.py"
-    # heavy_noise_path3 = "aflow_scripts/MBPP/mbpp_heavy_noise_3/round_5/graph.py"
-    requirements_path3 = "aflow_scripts/MBPP/mbpp_light_noise_1/round_6/graph.py"
-    paraphrasing_path3 = "aflow_scripts/MBPP/mbpp_light_noise_1/round_6/graph.py"
-    heavy_noise_path3 = "aflow_scripts/MBPP/mbpp_light_noise_1/round_6/graph.py"
-    evaluate_variant_group(original_path3, requirements_path3, paraphrasing_path3, light_noise_path3, moderate_noise_path3, heavy_noise_path3, prompt_path)
-
-    original_path4 = "aflow_scripts/MBPP/mbpp_original_4/round_1/graph.py"
-    # requirements_path4 = "aflow_scripts/MBPP/mbpp_requirements_4/round_2/graph.py"
-    # paraphrasing_path4 = "aflow_scripts/MBPP/mbpp_paraphrasing_4/round_4/graph.py"
-    light_noise_path4 = "aflow_scripts/MBPP/mbpp_light_noise_4/round_8/graph.py"
-    moderate_noise_path4 = "aflow_scripts/MBPP/mbpp_moderate_noise_4/round_8/graph.py"
-    # heavy_noise_path4 = "aflow_scripts/MBPP/mbpp_heavy_noise_4/round_3/graph.py"
-    requirements_path4 = "aflow_scripts/MBPP/mbpp_light_noise_1/round_6/graph.py"
-    paraphrasing_path4 = "aflow_scripts/MBPP/mbpp_light_noise_1/round_6/graph.py"
-    heavy_noise_path4 = "aflow_scripts/MBPP/mbpp_light_noise_1/round_6/graph.py"
-    evaluate_variant_group(original_path4, requirements_path4, paraphrasing_path4, light_noise_path4, moderate_noise_path4, heavy_noise_path4, prompt_path)
-
-    # original_path5 = "aflow_scripts/MBPP/mbpp_original_5/round_5/graph.py"
-    # requirements_path5 = "aflow_scripts/MBPP/mbpp_requirements_5/round_6/graph.py"
-    # paraphrasing_path5 = "aflow_scripts/MBPP/mbpp_paraphrasing_5/round_8/graph.py"
-    # light_noise_path5 = "aflow_scripts/MBPP/mbpp_light_noise_5/round_7/graph.py"
-    # moderate_noise_path5 = "aflow_scripts/MBPP/mbpp_moderate_noise_5/round_6/graph.py"
-    # heavy_noise_path5 = "aflow_scripts/MBPP/mbpp_heavy_noise_5/round_4/graph.py"
-    # evaluate_variant_group(original_path5, requirements_path5, paraphrasing_path5, light_noise_path5, moderate_noise_path5, heavy_noise_path5, prompt_path)
-
-    with open("aflow_score.txt", "a") as f:
-        f.write("MBPP1\n")
-        # f.write("original_nodes_score: " + str(sum(ori_node_scores) / len(ori_node_scores)) + "\n")
-        # f.write("requirements_nodes_score: " + str(sum(req_node_scores) / len(req_node_scores)) + "\n")
-        # f.write("paraphrasing_nodes_score: " + str(sum(para_node_scores) / len(para_node_scores)) + "\n")
+def write_dataset_scores(dataset_name, f):
+    """Write dataset scores to file"""
+    f.write(f"{dataset_name}\n")
+    
+    # Write node scores (calculate mean)
+    if ori_node_scores:
+        f.write("original_nodes_score: " + str(sum(ori_node_scores) / len(ori_node_scores)) + "\n")
+    if req_node_scores:
+        f.write("requirements_nodes_score: " + str(sum(req_node_scores) / len(req_node_scores)) + "\n")
+    if para_node_scores:
+        f.write("paraphrasing_nodes_score: " + str(sum(para_node_scores) / len(para_node_scores)) + "\n")
+    if light_node_scores:
         f.write("light_noise_nodes_score: " + str(sum(light_node_scores) / len(light_node_scores)) + "\n")
+    if moderate_node_scores:
         f.write("moderate_noise_nodes_score: " + str(sum(moderate_node_scores) / len(moderate_node_scores)) + "\n")
-        # f.write("heavy_noise_nodes_score: " + str(sum(heavy_node_scores) / len(heavy_node_scores)) + "\n")
-        # f.write("original_graph_score: " + str(sum(ori_graph_scores) / len(ori_graph_scores)) + "\n")
-        # f.write("requirements_graph_score: " + str(sum(req_graph_scores) / len(req_graph_scores)) + "\n")
-        # f.write("paraphrasing_graph_score: " + str(sum(para_graph_scores) / len(para_graph_scores)) + "\n")
+    if heavy_node_scores:
+        f.write("heavy_noise_nodes_score: " + str(sum(heavy_node_scores) / len(heavy_node_scores)) + "\n")
+    
+    # Write graph structure scores (calculate mean)
+    if ori_graph_scores:
+        f.write("original_graph_score: " + str(sum(ori_graph_scores) / len(ori_graph_scores)) + "\n")
+    if req_graph_scores:
+        f.write("requirements_graph_score: " + str(sum(req_graph_scores) / len(req_graph_scores)) + "\n")
+    if para_graph_scores:
+        f.write("paraphrasing_graph_score: " + str(sum(para_graph_scores) / len(para_graph_scores)) + "\n")
+    if light_graph_scores:
         f.write("light_noise_graph_score: " + str(sum(light_graph_scores) / len(light_graph_scores)) + "\n")
+    if moderate_graph_scores:
         f.write("moderate_noise_graph_score: " + str(sum(moderate_graph_scores) / len(moderate_graph_scores)) + "\n")
-        # f.write("heavy_noise_graph_score: " + str(sum(heavy_graph_scores) / len(heavy_graph_scores)) + "\n")
+    if heavy_graph_scores:
+        f.write("heavy_noise_graph_score: " + str(sum(heavy_graph_scores) / len(heavy_graph_scores)) + "\n")
+
+if __name__ == "__main__":
+    """Main function: Read paths from best.txt and execute AFlow evaluation for all datasets"""
+    prompt_path = "../AFlow/workspace/MBPP/workflows/template/op_prompt.py"
+    
+    # Parse best.txt file to get best result paths for all datasets
+    datasets = parse_best_results("aflow_scripts/best.txt")
+    
+    # Process datasets sorted by name
+    for dataset_name in sorted(datasets.keys()):
+        print(f"Processing dataset: {dataset_name}")
+        
+        dataset_paths = datasets[dataset_name]
+        
+        # Check if all required paths are included
+        required_types = ['original', 'requirements', 'paraphrasing', 'light_noise', 'moderate_noise', 'heavy_noise']
+        if not all(t in dataset_paths for t in required_types):
+            print(f"Warning: {dataset_name} is missing some required paths, skipping...")
+            continue
+        
+        # Clear score arrays (prepare for current dataset)
+        clear_score_arrays()
+        
+        # Call evaluation function
+        evaluate_variant_group(
+            dataset_paths['original'],
+            dataset_paths['requirements'],
+            dataset_paths['paraphrasing'],
+            dataset_paths['light_noise'],
+            dataset_paths['moderate_noise'],
+            dataset_paths['heavy_noise'],
+            prompt_path
+        )
+        
+        # Write current dataset scores to file
+        with open("aflow_score.txt", "a") as f:
+            write_dataset_scores(dataset_name, f)
+        
+        print(f"Completed processing dataset: {dataset_name}")
