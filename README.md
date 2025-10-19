@@ -57,28 +57,44 @@ By training on sets of synonymous task descriptions, RobustFlow boosts workflow 
     You can download our [prepared datasets](https://drive.google.com/file/d/1OFcKegpBPSEdxy217tZHj2o9QWwnN6tJ/view?usp=drive_link) or reproduce them locally.
 
     - Place the official original file in the dataset folder (example: `noise_dataset/DROP/drop_original.jsonl`).
-    
+
     - Run the rewrite script in that folder:
-    
+
       ```bash
       cd noise_dataset/DROP/
       python rewrite_drop.py
       ```
-    
+
       This generates:
-    
+
       - `drop_paraphrasing.jsonl`
       - `drop_requirements.jsonl`
       - `drop_light_noise.jsonl`
       - `drop_moderate_noise.jsonl`
       - `drop_heavy_noise.jsonl`
 
+    If you want to analyze the dataset, you can refer to the examples under `noise_dataset/Distribution/` and follow the steps below:
+
+    ```bash
+    cd noise_dataset/Distribution
+    bash extract.sh
+    ```
+
+    This will generate dataset embeddings in the `embedding/` directory. To Analyze and visualize, you can either write your own script or use the provided ones:
+
+    ```bash
+    python analyze.py
+    python draw.py
+    ```
+
+    These scripts compute statistics and clustering results from the embeddings, and generate distribution visualizations in the `visual/` directory.
+
 3. Baseline Evaluation
 
    Clone the official repositories of [AFlow](https://github.com/FoundationAgents/AFlow), [ScoreFlow](https://github.com/Gen-Verse/ScoreFlow) and [Flow](https://github.com/tmllab/2025_ICLR_FLOW) into `AFlow/`, `Scoreflow/` and `Flow/`, and run each project strictly following its README to reproduce the baseline results as-is.
-   
+
    - **AFlow Evaluation**
-   
+
      ```bash
      cd evaluate/
      bash infer_aflow.sh
@@ -86,13 +102,14 @@ By training on sets of synonymous task descriptions, RobustFlow boosts workflow 
      python eval_aflow.py
      cat aflow_score.txt
      ```
-   
+
    - **ScoreFlow Evaluation**
-   
+
    - **Flow Evaluation**
 
 
 4. Additional case studies are available in `samples/` for qualitative analysis.
+4. 
 
 ## Citation
 
