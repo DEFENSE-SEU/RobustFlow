@@ -1,0 +1,51 @@
+[
+    {
+        "question": "Passage: In May 1924, the French Army had established a line of out-posts north of the Oureghla River in disputed tribal territory. On 12 April 1925, an estimated 8,000 Rifians attacked this line and in two weeks over 40 of 66 French posts had been stormed or abandoned. French casualties exceeded 1,000 killed, 3,700 wounded and 1,000 missing - representing losses of over 20 percent of their forces deployed in the Rif. The French accordingly intervened on the side of Spain, employing up to 160,000 well trained and equipped troops from Metropolitan, Algerian, Senegalese and Foreign Legion units, as well as Moroccan regulars  and auxiliaries . With total Spanish forces now numbering about 90,000 the Rifian forces were now seriously outnumbered by their Franco-Spanish opponents. Final French deaths from battle and disease, in what had now become a major war, were to total 8,628.\nQuestion: Which nation had more troops?\nAnswer:",
+        "right_answer": "The French|French",
+        "model_output": "France had a larger number of troops during the conflict described in the passage, with up to 160,000 troops compared to Spain's 90,000 troops.",
+        "extracted_output": "France had a larger number of troops during the conflict described in the passage, with up to 160,000 troops compared to Spain's 90,000 troops.",
+        "extract_answer_code": "None"
+    },
+    {
+        "question": "Passage: Brandenburg-Prussia's claims in Silesia were based, in part, on a 1537 inheritance treaty between the Silesian duke Frederick II of Legnica and the Hohenzollern Prince-Elector Joachim II Hector of Brandenburg, whereby the Silesian duchies of Liegnitz, Wohlau and Brieg were to pass to the Electorate of Brandenburg if the Silesian Piasts should become extinct. At the time, the Habsburg King Ferdinand I of Bohemia  immediately rejected the agreement; nevertheless, in 1675 the \"Great Elector\" Frederick William of Brandenburg laid claim to the Silesian principalities when, with the death of Duke George William of Liegnitz, the Piast line ended. In 1603, Hohenzollern Elector Joachim III Frederick of Brandenburg also inherited the Silesian Duchy of Jägerndorf from his cousin, Margrave George Frederick of Brandenburg-Ansbach. After the Bohemian Revolt and the outbreak of the Thirty Years' War, however, the Catholic Holy Roman Emperor Ferdinand II confiscated the possessions of the Protestant Hohenzollerns in his Bohemian lands in 1621 after winning the Battle of White Mountain. The Electors of Brandenburg continued, nevertheless, to assert themselves as the legitimate rulers of Jägerndorf. Brandenburg, however, was unable to enforce these dynastic territorial claims. In 1685, when Austria was engaged in the Great Turkish War, Emperor Leopold I gave Elector Frederick William immediate control of the Silesian exclave of Schwiebus in return for military support against the Turks and the surrender of the outstanding Hohenzollern claims in Silesia. However, after the accession of the Elector's son and successor, Frederick III of Brandenburg, the Emperor took back control of Schwiebus in 1694, asserting that the territory had only been personally assigned to the late Frederick William for life. Furious, Frederick III in turn reasserted the old Hohenzollern claims to Jägerndorf and the Silesian Piast heritage.\nQuestion: How many years before Austria was engaged in the Great Turkish War was the battle of white mountain won?\nAnswer:",
+        "right_answer": "64",
+        "model_output": "63",
+        "extracted_output": "63",
+        "extract_answer_code": "None"
+    },
+    {
+        "question": "Passage: In the county, the population is spread out with 24.60% under the age of 18, 6.40% from 18 to 24, 22.80% from 25 to 44, 25.40% from 45 to 64, and 20.80% who are 65 years of age or older.  The median age is 42 years.  For every 100 females there are 95.90 males.  For every 100 females age 18 and over, there are 90.50 males.\nQuestion: How many in percent weren't 45 to 64?\nAnswer:",
+        "right_answer": "74.6",
+        "model_output": "74.60%",
+        "extracted_output": "74.60%",
+        "extract_answer_code": "None"
+    },
+    {
+        "question": "Passage: Coming off their bye week, the Chargers went home for a Week 10 AFC West duel with the Kansas City Chiefs.  In the first quarter, San Diego trailed early as Chiefs QB Tyler Thigpen completed a 30-yard TD pass to WR Mark Bradley.  In the second quarter, the 'Bolts got on the board as kicker Nate Kaeding got a 34-yard and a 26-yard field goal.  Kansas City would close out the half as Thigpen completed a 34-yard TD pass to TE Tony Gonzalez (with a failed 2-point conversion). In the third quarter, the Chargers tied the game as QB Philip Rivers completed a 5-yard TD pass to WR Malcom Floyd.  In the fourth quarter, San Diego took the lead as Rivers completed an 8-yard TD pass to TE Antonio Gates.  The Chiefs tried to rally as Thigpen completed a 3-yard TD pass to Gonzalez after a very controversial Pass Interference call on Safety Clinton Hart, in which Gonzalez did not look for a flag, making the call even more controversial.  Fortunately, the Chargers' defense stopped both the 2-point conversion and the ensuing onside kick to preserve their much-needed victory.\nQuestion: What was the shortest pass for a touchdown?\nAnswer:",
+        "right_answer": "3-yard|3",
+        "model_output": "5 yards",
+        "extracted_output": "5 yards",
+        "extract_answer_code": "None"
+    },
+    {
+        "question": "Passage: The Broncos' defense surrendered only three field goals by Texans' placekicker Nick Novak, and spoiled quarterback Brock Osweiler's return to Denver, allowing only 131 passing yards. Osweiler spent the previous four seasons (2012-2015) as Peyton Manning's backup quarterback, and started seven games in 2015 while Manning was injured. The Broncos scored three offensive touchdowns: a 4-yard pass from quarterback Trevor Siemian to Demaryius Thomas, plus two rushing touchdowns, one from C. J. Anderson, and the other from rookie Devontae Booker. Placekicker Brandon McManus also added two field goals. This was the first of two games in which the Broncos wore wear their alternate navy blue uniforms&#8212;the other was Week 15 vs. the New England Patriots. This was Broncos' head coach Gary Kubiak's first victory against the Texans, for whom he coached from 2006-2013, as well as Kubiak's return to the sideline following a health scare that forced him to miss the team's Week 6 loss to the San Diego Chargers. During halftime, three former Broncos were inducted into the Ring of Fame: Placekicker Jason Elam, who played with the Broncos from 1993-2007 and is the franchise's all-time leader in field goals (395) and points scored (1,786); defensive lineman Simon Fletcher, who played with the Broncos from 1985-1995 and is the franchise's all-time leader in sacks (97.5) and consecutive games played (172); safety John Lynch, who played four seasons with the Broncos from 2004-2007.\nQuestion: Which quarterback threw more touchdowns?\nAnswer:",
+        "right_answer": "Trevor Siemian",
+        "model_output": "Trevor Siemian threw one touchdown pass, while Brock Osweiler threw none. Therefore, Trevor Siemian had more touchdown passes in the game described in the passage.",
+        "extracted_output": "Trevor Siemian threw one touchdown pass, while Brock Osweiler threw none. Therefore, Trevor Siemian had more touchdown passes in the game described in the passage.",
+        "extract_answer_code": "None"
+    },
+    {
+        "question": "Passage: The country's economic transformation was far from complete. Political and financial crises in 1997, shattered the Czech Republic's image as one of the most stable and prosperous of post-Communist states. Delays in enterprise restructuring and failure to develop a well-functioning capital market played major roles in Czech economic troubles, which culminated in a currency crisis in May. The formerly pegged currency was forced into a floating system as investors sold their Korunas faster than the government could buy them. This followed a worldwide trend to divest from developing countries that year. Investors also worried the republic's economic transformation was far from complete. Another complicating factor was the current account deficit, which reached nearly 8% of GDP. In response to the crisis, two austerity packages were introduced later in the spring , which cut government spending by 2.5% of GDP. Growth dropped to 0.3% in 1997, −2.3% in 1998, and −0.5% in 1999. The government established a restructuring agency in 1999 and launched a revitalization program - to spur the sale of firms to foreign companies. Key priorities included accelerating legislative convergence with EU norms, restructuring enterprises, and privatising banks and utilities. The economy, fueled by increased export growth and investment, was expected to recover by 2000.\nQuestion: How many percentage points did GDP growth drop from 1997 to 1999?\nAnswer:",
+        "right_answer": "3.1|5.3|.8",
+        "model_output": "0.8",
+        "extracted_output": "0.8",
+        "extract_answer_code": "None"
+    },
+    {
+        "question": "Passage: According to the 2016 American Community Survey, 78.1% of working Nashville residents commuted by driving alone, 9.8% carpooled, 2% used public transportation, and 2.2% walked. About 1.1% used all other forms of transportation, including taxicab, motorcycle, and bicycle. About 6.7% of working Nashville residents worked at home. In 2015, 7.9% of city of Nashville households were without a car; this figure decreased to 5.9% in 2016. The national average was 8.7 percent in 2016. Nashville averaged 1.72 cars per household in 2016, compared to a national average of 1.8 per household.\nQuestion: How many less Nashville residents worked at home than were without a car?\nAnswer:",
+        "right_answer": "1.2",
+        "model_output": "0.8%",
+        "extracted_output": "0.8%",
+        "extract_answer_code": "None"
+    }
+]

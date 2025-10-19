@@ -1,0 +1,7 @@
+{
+    "father node": 8,
+    "modification": "modify: Added a self-consistency check before generating the final solution to ensure the reliability of the answers.",
+    "before": 0.7978587588881706,
+    "after": 0.7924175824175824,
+    "succeed": false
+}

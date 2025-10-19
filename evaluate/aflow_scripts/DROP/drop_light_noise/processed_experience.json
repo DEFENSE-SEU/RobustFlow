@@ -1,0 +1,52 @@
+{
+    "4": {
+        "score": 0.6552796419250692,
+        "success": {},
+        "failure": {
+            "11": {
+                "modification": "modify: Added a self-ask mechanism to enhance the quality of the generated response.",
+                "score": 0.25296558039728156
+            },
+            "14": {
+                "modification": "Added a review mechanism to evaluate the generated responses before final selection, enhancing the quality of the output.",
+                "score": 0.46492583024191275
+            },
+            "12": {
+                "modification": "Added a self-ask mechanism to enhance the quality of the generated response by generating multiple answers and selecting the best one.",
+                "score": 0.5060916705746326
+            }
+        }
+    },
+    "2": {
+        "score": 0.8053597480106103,
+        "success": {},
+        "failure": {
+            "3": {
+                "modification": "modify: Added ScEnsemble operator to improve answer selection based on multiple generated responses.",
+                "score": 0.6315887176843471
+            },
+            "4": {
+                "modification": "Added ScEnsemble operator to improve answer selection by integrating multiple generated responses before final output. This enhances the reliability of the answer by selecting the most frequently occurring solution. (Score: 0.6315887176843471)",
+                "score": 0.6552796419250692
+            },
+            "5": {
+                "modification": "Modified the workflow to include ScEnsemble operator for improved answer selection based on multiple generated responses. This enhances the reliability of the final output by selecting the most frequently occurring solution. Additionally, adjusted the response combination to utilize the ensemble output.",
+                "score": 0.6516751445705719
+            }
+        }
+    },
+    "1": {
+        "score": 0.1075771098456056,
+        "success": {
+            "2": {
+                "modification": "modify",
+                "score": 0.8053597480106103
+            },
+            "10": {
+                "modification": "Added the AnswerGenerate operator to provide a step-by-step breakdown of the calculations before generating the final answer.",
+                "score": 0.12018632713603927
+            }
+        },
+        "failure": {}
+    }
+}

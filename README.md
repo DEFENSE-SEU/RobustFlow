@@ -82,6 +82,8 @@ By training on sets of synonymous task descriptions, RobustFlow boosts workflow 
      ```bash
      cd evaluate/
      bash infer_aflow.sh
+     cd aflow_scripts/
+     python find.py
      ```
    
      

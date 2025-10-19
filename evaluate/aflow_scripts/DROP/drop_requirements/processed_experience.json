@@ -1,0 +1,112 @@
+{
+    "6": {
+        "score": 0.5555555555555556,
+        "success": {
+            "12": {
+                "modification": "Added a step to generate multiple initial solutions before reviewing them, enhancing the ensemble process for better accuracy.",
+                "score": 0.5601010101010101
+            }
+        },
+        "failure": {
+            "11": {
+                "modification": "modify: added a step to generate multiple initial solutions before reviewing them",
+                "score": 0.012055172125770133
+            }
+        }
+    },
+    "2": {
+        "score": 0.5351010101010101,
+        "success": {},
+        "failure": {
+            "3": {
+                "modification": "modify: Added ScEnsemble operator to improve answer selection based on multiple generated solutions.",
+                "score": 0.0
+            },
+            "7": {
+                "modification": "Added ScEnsemble operator to improve answer selection by integrating multiple generated solutions before finalizing the response. This enhances the robustness of the answer selection process.",
+                "score": 0.0
+            }
+        }
+    },
+    "12": {
+        "score": 0.5601010101010101,
+        "success": {
+            "16": {
+                "modification": "Modified the workflow to include a feedback loop that allows for additional iterations of solution generation if the review indicates that the initial solutions are not satisfactory. This aims to enhance the quality of the final output by allowing for refinement based on the review results.",
+                "score": 0.5875
+            }
+        },
+        "failure": {
+            "15": {
+                "modification": "Modified the workflow to include a review step after generating initial solutions, ensuring that the best solution is selected based on a more thorough evaluation of the generated responses. This change aims to improve accuracy by incorporating a review of the solutions before final selection.",
+                "score": 0.5555555555555556
+            },
+            "13": {
+                "modification": "modify: Added a loop to generate multiple initial solutions for better coverage.",
+                "score": 0.5430555555555555
+            }
+        }
+    },
+    "16": {
+        "score": 0.5875,
+        "success": {
+            "20": {
+                "modification": "Added a step to generate multiple initial solutions using varied instructions to enhance diversity in the answers before reviewing them. This aims to improve the quality of the final answer by incorporating varied perspectives.",
+                "score": 0.5930555555555556
+            }
+        },
+        "failure": {
+            "17": {
+                "modification": "modify: Added a step to generate multiple initial solutions before reviewing them to enhance the quality of the final answer.",
+                "score": 0.575
+            },
+            "18": {
+                "modification": "Added a step to generate multiple initial solutions using different instructions to enhance diversity in the answers before reviewing them. This aims to improve the quality of the final answer by incorporating varied perspectives.",
+                "score": 0.5549999999999999
+            }
+        }
+    },
+    "5": {
+        "score": 0.625,
+        "success": {},
+        "failure": {
+            "9": {
+                "modification": "Added a review step after generating the final solution to enhance accuracy and ensure the solution aligns with the question context.",
+                "score": 0.4930555555555555
+            },
+            "6": {
+                "modification": "modify: Added a review step before generating the final solution to enhance accuracy.",
+                "score": 0.5555555555555556
+            }
+        }
+    },
+    "1": {
+        "score": 0.5658496732026144,
+        "success": {
+            "5": {
+                "modification": "Added the AnswerGenerate operator to provide a step-by-step thought process before generating the final answer, and incorporated ScEnsemble to improve the selection of the best solution.",
+                "score": 0.625
+            }
+        },
+        "failure": {
+            "14": {
+                "modification": "Added the ScEnsemble operator to improve the selection of the best solution by integrating multiple outputs before finalizing the answer.",
+                "score": 0.0
+            },
+            "2": {
+                "modification": "modify: Added the AnswerGenerate operator to provide a step-by-step thought process before generating the final answer.",
+                "score": 0.5351010101010101
+            }
+        }
+    },
+    "17": {
+        "score": 0.575,
+        "success": {
+            "19": {
+                "modification": "modify: Added a loop to generate multiple solutions before reviewing them, enhancing the solution diversity.",
+                "score": 0.6055555555555555
+            }
+        },
+        "failure": {}
+    }
+}

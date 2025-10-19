@@ -1,0 +1,7 @@
+{
+    "father node": 2,
+    "modification": "modify: Added ScEnsemble operator to improve answer selection by integrating multiple generated responses.",
+    "before": 0.09888572627532821,
+    "after": 0.09243741945023912,
+    "succeed": false
+}

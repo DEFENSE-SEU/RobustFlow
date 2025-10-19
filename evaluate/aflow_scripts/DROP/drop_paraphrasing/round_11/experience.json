@@ -1,0 +1,7 @@
+{
+    "father node": 9,
+    "modification": "Added a self-consistency check after generating responses to ensure the most reliable answer is selected. This involves generating a summary of the responses before final selection.",
+    "before": 0.09854019062442884,
+    "after": 0.08861587640923599,
+    "succeed": false
+}

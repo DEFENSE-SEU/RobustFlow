@@ -1,0 +1,7 @@
+{
+    "father node": 1,
+    "modification": "Added the AnswerGenerate operator to provide a step-by-step breakdown of the calculations before generating the final answer.",
+    "before": 0.1075771098456056,
+    "after": 0.12018632713603927,
+    "succeed": true
+}

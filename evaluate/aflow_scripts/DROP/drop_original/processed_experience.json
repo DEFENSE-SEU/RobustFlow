@@ -1,0 +1,70 @@
+{
+    "3": {
+        "score": 0.7124531024531024,
+        "success": {
+            "8": {
+                "modification": "Modified the workflow to include a step that generates a summary of the question before generating answers. This summary will help provide context and clarity, potentially improving the quality of the generated answers.",
+                "score": 0.7439531024531024
+            }
+        },
+        "failure": {
+            "11": {
+                "modification": "Modified the workflow to include an additional step that generates a summary of the problem after generating multiple answers. This summary will help provide context and clarity, potentially improving the quality of the final solution selection.",
+                "score": 0.568159426562788
+            },
+            "13": {
+                "modification": "Modified the workflow to include a step that generates a summary of the problem before generating answers. This summary will help provide context and clarity, potentially improving the quality of the generated answers. Additionally, incorporated a review step to evaluate the generated answers for consistency and relevance before final selection, enhancing the overall solution quality.",
+                "score": 0.3940117183257136
+            },
+            "6": {
+                "modification": "Modified the workflow to include a review step after generating multiple answers. This step will evaluate the generated answers for consistency and relevance before final selection, enhancing the overall solution quality.",
+                "score": 0.5452599122981289
+            },
+            "4": {
+                "modification": "modify: Added a review step to enhance the solution selection process by incorporating a review of the generated answers before final selection.",
+                "score": 0.5244316511772433
+            },
+            "10": {
+                "modification": "Modified the workflow to include a step that generates a summary of the problem after generating multiple answers. This summary will help provide context and clarity, potentially improving the quality of the final solution selection.",
+                "score": 0.59853781745074
+            },
+            "5": {
+                "modification": "Modified the workflow to include an additional review step after generating multiple answers. This step will evaluate the generated answers for consistency and relevance before final selection, enhancing the overall solution quality.",
+                "score": 0.5035700456961678
+            },
+            "7": {
+                "modification": "Modified the workflow to include an additional step that generates a summary of the problem before generating answers. This summary will help provide context and clarity, potentially improving the quality of the generated answers. (Score: 0.750)",
+                "score": 0.4117115857109452
+            }
+        }
+    },
+    "1": {
+        "score": 0.14558886084092662,
+        "success": {
+            "3": {
+                "modification": "Added the AnswerGenerate operator to provide a step-by-step breakdown of the solution before finalizing the answer, and incorporated ScEnsemble to improve the selection of the best solution from multiple generated answers.",
+                "score": 0.7124531024531024
+            }
+        },
+        "failure": {
+            "2": {
+                "modification": "modify: Added the AnswerGenerate operator to provide a step-by-step breakdown of the solution before finalizing the answer.",
+                "score": 0.11389310751968304
+            }
+        }
+    },
+    "8": {
+        "score": 0.7439531024531024,
+        "success": {},
+        "failure": {
+            "9": {
+                "modification": "modify: Added a self-consistency check before generating multiple answers to ensure the quality of the input.",
+                "score": 0.6993811562833303
+            },
+            "12": {
+                "modification": "Added a review step to evaluate the generated answers before final selection, enhancing the decision-making process.",
+                "score": 0.46612458589300926
+            }
+        }
+    }
+}

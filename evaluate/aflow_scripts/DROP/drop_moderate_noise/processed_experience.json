@@ -1,0 +1,63 @@
+{
+    "7": {
+        "score": 0.7907142857142857,
+        "success": {},
+        "failure": {
+            "11": {
+                "modification": "modify: Added a scoring mechanism to evaluate the generated solutions based on relevance and accuracy before final selection, enhancing the decision-making process.",
+                "score": 0.16081140658349824
+            },
+            "9": {
+                "modification": "Added a review step to evaluate the generated solutions before final selection, enhancing the decision-making process. This step allows for a more thorough analysis of the solutions generated, potentially improving accuracy. (Score: 0.0456789123456789)",
+                "score": 0.14456078206763107
+            },
+            "10": {
+                "modification": "Added a review step after generating multiple solutions to evaluate and select the best solution based on a scoring mechanism, enhancing the decision-making process.",
+                "score": 0.04002084802512849
+            },
+            "8": {
+                "modification": "modify: Added a self-consistency check after generating multiple solutions to ensure the best solution is selected based on frequency.",
+                "score": 0.03432673933832029
+            }
+        }
+    },
+    "1": {
+        "score": 0.10159907774924606,
+        "success": {
+            "3": {
+                "modification": "Added the AnswerGenerate operator to provide a step-by-step thought process before generating the final answer, and incorporated ScEnsemble to improve the selection of the best solution.",
+                "score": 0.6366288930498489
+            },
+            "2": {
+                "modification": "modify: Added the AnswerGenerate operator to provide a step-by-step thought process before generating the final answer.",
+                "score": 0.10755947203567953
+            }
+        },
+        "failure": {}
+    },
+    "5": {
+        "score": 0.6674301441312311,
+        "success": {
+            "7": {
+                "modification": "Added a step to generate multiple answers before selecting the final solution, enhancing the ensemble process.",
+                "score": 0.7907142857142857
+            }
+        },
+        "failure": {
+            "6": {
+                "modification": "modify: Added a self-ask step to refine the question before generating the thought process.",
+                "score": 0.5507926245210728
+            }
+        }
+    },
+    "3": {
+        "score": 0.6366288930498489,
+        "success": {
+            "5": {
+                "modification": "modify: Added a self-ask mechanism to enhance the thought process generation.",
+                "score": 0.6674301441312311
+            }
+        },
+        "failure": {}
+    }
+}

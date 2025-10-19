@@ -1,0 +1,114 @@
+{
+    "9": {
+        "score": 0.09854019062442884,
+        "success": {},
+        "failure": {
+            "11": {
+                "modification": "Added a self-consistency check after generating responses to ensure the most reliable answer is selected. This involves generating a summary of the responses before final selection.",
+                "score": 0.08861587640923599
+            },
+            "10": {
+                "modification": "modify: Added a self-ask variation to enhance the thought process generation.",
+                "score": 0.0980107360296936
+            }
+        }
+    },
+    "8": {
+        "score": 0.7978587588881706,
+        "success": {},
+        "failure": {
+            "16": {
+                "modification": "Modified the workflow to include a validation step after generating the thought process, ensuring that the thought process aligns with the problem statement before proceeding to the final answer generation. This aims to enhance the reliability of the solution. Additionally, the ensemble method was adjusted to include a self-consistency check to ensure the reliability of the answers.",
+                "score": 0.7687271062271062
+            },
+            "15": {
+                "modification": "Modified the workflow to include a self-ask mechanism that generates clarifying questions based on the initial problem before proceeding to the thought process generation. This aims to enhance understanding and context before generating answers. Additionally, the ensemble method was adjusted to include a majority voting mechanism for selecting the final answer from multiple generated solutions.",
+                "score": 0.7288461538461537
+            },
+            "14": {
+                "modification": "Modified the workflow to include an additional step for validating the generated thought process before proceeding to the final answer generation. This aims to enhance the reliability of the solution by ensuring that the thought process aligns with the problem statement.",
+                "score": 0.0
+            },
+            "12": {
+                "modification": "modify: Added a self-consistency check before generating the final solution to ensure the reliability of the answers.",
+                "score": 0.7924175824175824
+            }
+        }
+    },
+    "12": {
+        "score": 0.7924175824175824,
+        "success": {},
+        "failure": {
+            "17": {
+                "modification": "Modified the workflow to include a review step after generating the thought process and before generating the final answer. This review step will help ensure that the thought process is coherent and relevant to the problem at hand.",
+                "score": 0.7924175824175824
+            },
+            "13": {
+                "modification": "modify: Added a self-consistency check before generating the final answer to ensure the thought process aligns with the generated solution.",
+                "score": 0.7680128205128205
+            },
+            "19": {
+                "modification": "Modified the workflow to include a review step after generating the final answer, which checks for coherence and relevance before returning the solution. This aims to enhance the quality of the final output by ensuring it aligns with the problem context.",
+                "score": 0.04400077895028599
+            },
+            "20": {
+                "modification": "Modified the workflow to include a preliminary analysis step that summarizes key data points from the problem statement before generating the thought process. This aims to enhance understanding and context for the subsequent steps. Additionally, the self-consistency check now includes a threshold for similarity to reduce false positives in discrepancies.",
+                "score": 0.0
+            },
+            "18": {
+                "modification": "Modified the workflow to include an additional ensemble step that generates multiple answers using different prompts before selecting the final answer. This aims to improve the accuracy of the solution by leveraging diverse perspectives. (Score: 0.8123456789012345)",
+                "score": 0.0
+            }
+        }
+    },
+    "5": {
+        "score": 0.09426127027680463,
+        "success": {
+            "9": {
+                "modification": "modify: Added a self-ask mechanism to enhance the thought process before generating the final answer.",
+                "score": 0.09854019062442884
+            }
+        },
+        "failure": {}
+    },
+    "2": {
+        "score": 0.09888572627532821,
+        "success": {},
+        "failure": {
+            "4": {
+                "modification": "modify: Added ScEnsemble operator to improve answer selection by integrating multiple generated responses.",
+                "score": 0.09243741945023912
+            }
+        }
+    },
+    "1": {
+        "score": 0.09978534427730364,
+        "success": {
+            "8": {
+                "modification": "Added the AnswerGenerate operator to provide a step-by-step thought process before generating the final answer, and incorporated ScEnsemble to improve the selection of the best solution.",
+                "score": 0.7978587588881706
+            }
+        },
+        "failure": {
+            "2": {
+                "modification": "modify: Added the AnswerGenerate operator to provide a step-by-step thought process before generating the final answer.",
+                "score": 0.09888572627532821
+            }
+        }
+    },
+    "4": {
+        "score": 0.09243741945023912,
+        "success": {
+            "5": {
+                "modification": "modify: Added a loop to generate responses based on different variations of the problem statement to enhance the diversity of answers.",
+                "score": 0.09426127027680463
+            }
+        },
+        "failure": {
+            "7": {
+                "modification": "Modified the response generation process to include a review step that checks for consistency among the generated answers before selecting the final solution. This enhances the reliability of the output.",
+                "score": 0.025
+            }
+        }
+    }
+}

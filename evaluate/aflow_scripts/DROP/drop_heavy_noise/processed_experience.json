@@ -1,0 +1,101 @@
+{
+    "10": {
+        "score": 0.12005028999178777,
+        "success": {
+            "11": {
+                "modification": "modify: Added a loop to generate responses based on different variations of the question to improve context understanding.",
+                "score": 0.1283599013567345
+            }
+        },
+        "failure": {}
+    },
+    "1": {
+        "score": 0.12641393335172513,
+        "success": {},
+        "failure": {
+            "3": {
+                "modification": "Added the AnswerGenerate operator to provide a step-by-step breakdown of the answer before finalizing it with the Custom operator. This will help clarify the reasoning process and improve the accuracy of the final answer.",
+                "score": 0.11631883169330526
+            },
+            "2": {
+                "modification": "modify: Added the AnswerGenerate operator to provide a step-by-step breakdown of the answer before finalizing it with the Custom operator.",
+                "score": 0.12277523230873659
+            },
+            "7": {
+                "modification": "Added the AnswerGenerate operator to generate a step-by-step breakdown of the answer before finalizing it with the Custom operator. This will help clarify the reasoning process and improve the accuracy of the final answer.",
+                "score": 0.11768952617948676
+            }
+        }
+    },
+    "14": {
+        "score": 0.12966229331485737,
+        "success": {
+            "16": {
+                "modification": "Modified the response generation process to include a self-consistency check by generating multiple responses for each variation and selecting the most frequent answer. This enhances the accuracy of the final solution.",
+                "score": 0.12988119129303463
+            },
+            "20": {
+                "modification": "Modified the response generation process to include a step that checks for the consistency of the generated responses by comparing them against the original question. This ensures that the final answer is not only accurate but also relevant to the question asked.",
+                "score": 0.13349854077443432
+            }
+        },
+        "failure": {
+            "15": {
+                "modification": "modify: Added a step to validate the extracted answer before finalizing it.",
+                "score": 0.03939999620538987
+            },
+            "19": {
+                "modification": "Modified the response generation process to include a filtering step that checks for the relevance of the generated responses before summarizing them. This ensures that only the most pertinent responses are considered, improving the overall accuracy of the final solution.",
+                "score": 0.019154892726321298
+            }
+        }
+    },
+    "11": {
+        "score": 0.1283599013567345,
+        "success": {},
+        "failure": {
+            "17": {
+                "modification": "Modified the workflow to include a review mechanism that evaluates the generated responses for consistency and relevance before final selection. This aims to enhance the quality of the final answer by filtering out less relevant responses. Additionally, the variations of the question have been expanded to include synonyms and rephrased questions for better coverage. (Score: 0.13000000000000003)",
+                "score": 0.12511061507112012
+            },
+            "13": {
+                "modification": "Modified the workflow to include a self-ask mechanism that generates clarifying questions based on the original problem before generating responses. This aims to enhance understanding and improve the accuracy of the final answer.",
+                "score": 0.12326021554005295
+            },
+            "12": {
+                "modification": "modify: Added a self-ask mechanism to enhance the problem-solving process by generating clarifying questions before providing the final answer.",
+                "score": 0.12655331578940893
+            }
+        }
+    },
+    "13": {
+        "score": 0.12326021554005295,
+        "success": {
+            "14": {
+                "modification": "modify: Added a step to summarize the generated responses before selecting the final solution.",
+                "score": 0.12966229331485737
+            }
+        },
+        "failure": {}
+    },
+    "7": {
+        "score": 0.11768952617948676,
+        "success": {
+            "10": {
+                "modification": "modify: Added ScEnsemble operator to improve answer selection based on multiple generated responses.",
+                "score": 0.12005028999178777
+            }
+        },
+        "failure": {}
+    },
+    "16": {
+        "score": 0.12988119129303463,
+        "success": {},
+        "failure": {
+            "18": {
+                "modification": "modify: Added a step to summarize the context before generating clarifying questions to enhance understanding.",
+                "score": 0.11967294304778353
+            }
+        }
+    }
+}

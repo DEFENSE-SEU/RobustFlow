@@ -1,0 +1,7 @@
+{
+    "father node": 6,
+    "modification": "modify: added a step to generate multiple initial solutions before reviewing them",
+    "before": 0.5555555555555556,
+    "after": 0.012055172125770133,
+    "succeed": false
+}

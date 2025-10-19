@@ -1,0 +1,51 @@
+[
+    {
+        "question": "Passage: It obtained city rights in 1163 from Count Philip of Flanders. The Battle of Nieuwpoort, between the Dutch and the Spanish, happened here in 1600. The city was a Dunkirker base. Painter Victor Boucquet made two of the altar-pieces for the great church in the 17th century. The city was occupied by French forces for six years between 1757 and 1763, as part of the conditions of the Second Treaty of Versailles between France and Austria. A large waterworks infrastructure project called the Ganzepoot  was constructed in Nieuwpoort in the 19th century to drain the polders and channel water in and around the town and to the North Sea. During the Battle of the Yser, part of the First Battle of Ypres in World War I, Hendrik Geeraert opened the sluice gates on the mouth of the river Yser twice to flood the lower lying land, thus halting the German advance.\nQuestion: What is the number of countries that signed the Second Treaty of Versailles?\nAnswer:",
+        "right_answer": "2",
+        "model_output": "Four",
+        "extracted_output": "Four",
+        "extract_answer_code": "None"
+    },
+    {
+        "question": "Passage: According to the 2016 American Community Survey, 78.1% of working Nashville residents commuted by driving alone, 9.8% carpooled, 2% used public transportation, and 2.2% walked. About 1.1% used all other forms of transportation, including taxicab, motorcycle, and bicycle. About 6.7% of working Nashville residents worked at home. In 2015, 7.9% of city of Nashville households were without a car; this figure decreased to 5.9% in 2016. The national average was 8.7 percent in 2016. Nashville averaged 1.72 cars per household in 2016, compared to a national average of 1.8 per household.\nQuestion: Which location had the highest average number of cars per household in 2016, Nashville or the national average?\nAnswer:",
+        "right_answer": "Nashville|national",
+        "model_output": "The national average had the highest average number of cars per household in 2016.",
+        "extracted_output": "The national average had the highest average number of cars per household in 2016.",
+        "extract_answer_code": "None"
+    },
+    {
+        "question": "Passage: In 2009, the Libyan Army (1951-2011) consisted of 25,000 volunteers with an additional 25,000 conscripts (total 50,000). At that time, the army was organised into 11 Border Defence and 4 Security Zones, one regime security brigade, 10 Tank Battalions, 10 Mechanized Infantry Battalions, 18 Infantry Battalions, 6 Commando Battalions, 22 Artillery Battalions, 4 SSM Brigade and 7 Air Defence Artillery Battalions. Khamis Gaddafis 32nd Brigade was one of the main regime protection forces. The Khamis Brigade was considered by US diplomats in 2009 as the most capable of defending the regime. In addition, the Revolutionary Guard Corps also served as a brigade-sized protection force for Gaddafi. In 2009, it emerged that a British Special Air Service team were training Libyan special forces. Under Gaddafi, conscription was listed as 18 months.\nQuestion: Was the number of tank battalions in the army fewer than that of Infantry battalions?\nAnswer:",
+        "right_answer": "Tank Battalions|Tank",
+        "model_output": "Yes, the number of tank battalions in the Libyan Army in 2009 was fewer than that of infantry battalions. There were 10 Tank Battalions and 18 Infantry Battalions, so 10 is less than 18.",
+        "extracted_output": "Yes, the number of tank battalions in the Libyan Army in 2009 was fewer than that of infantry battalions. There were 10 Tank Battalions and 18 Infantry Battalions, so 10 is less than 18.",
+        "extract_answer_code": "None"
+    },
+    {
+        "question": "Passage: Hoping to rebound from their home loss to the Chargers, the Titans flew to Arrowhead Stadium for a Week 15 intraconference duel with the Kansas City Chiefs. In the first quarter, Tennessee drew first blood as QB Vince Young completed a 16-yard TD pass to WR Roydell Williams for the only score of the period. In the second quarter, the Chiefs tied the game with QB Brodie Croyle completing a 10-yard TD pass to WR Samie Parker. Afterwards, the Titans responded with kicker Rob Bironas managing to get a 37-yard field goal. Kansas City would take the lead prior to halftime with Croyle completing a 9-yard TD pass to FB Kris Wilson. In the third quarter, Tennessee would draw close as Bironas kicked a 37-yard field goal. The Chiefs answered with kicker John Carney getting a 36-yard field goal. Afterwards, the Titans would retake the lead with Young and Williams hooking up with each other again on a 41-yard TD pass. In the fourth quarter, Tennessee clinched the victory with Bironas nailing a 40-yard and a 25-yard field goal. With the win, the Titans kept their playoff hopes alive at 8-6.\nQuestion: Who was the first to score?\nAnswer:",
+        "right_answer": "Tennessee",
+        "model_output": "The Titans",
+        "extracted_output": "The Titans",
+        "extract_answer_code": "None"
+    },
+    {
+        "question": "Passage: The Ogaden War was a Somali military offensive between July 1977 and March 1978 over the disputed Ethiopian region Ogaden starting with the Somali Democratic Republic's invasion of Ethiopia. The Soviet Union disapproved of the invasion and ceased its support of Somalia to instead start supporting Ethiopia, whereas the United States conversely ceased its support of Ethiopia and started supporting Somalia. Ethiopia was saved from a major defeat and a permanent loss of territory due to a massive airlift of military supplies , the arrival of 16,000 Cuban troops, 1,500 Soviet advisors and 2 brigades from South Yemen, also airlifted to reinforce Harar. The Ethiopians prevailed at Harar, Dire Dawa, Jijiga and began to push the Somalis out of the Ogaden systematically. By March 1978, the Ethiopians had captured almost all of the Ogaden, prompting the defeated Somalis to give up their claim to the region. With 1/3 of the initial Somali National Army invasion force killed and 1/2 of the Somali Airforce destroyed, the war left Somalia with a disorganized and demoralized army and an angry population. All of these conditions led to a revolt in the army which eventually spiraled into a civil war and Somalia's current situation.\nQuestion: Which suffered greater losses, the initial Somali National Army force in terms of fatalities or the Somali Air-force in terms of destruction?\nAnswer:",
+        "right_answer": "Somali Airforce|the Somali Airforce|Somali Air-force destroyed",
+        "model_output": "The initial Somali National Army force suffered greater losses in terms of fatalities.",
+        "extracted_output": "The initial Somali National Army force suffered greater losses in terms of fatalities.",
+        "extract_answer_code": "None"
+    },
+    {
+        "question": "Passage: The 2010 United States Census reported that Lassen County had a population of 34,895. The racial makeup of Lassen County was 25,532 (73.2%) White (U.S. Census), 2,834 (8.1%) African American (U.S. Census), 1,234 (3.5%) Native American (U.S. Census), 356 (1.0%) Asian (U.S. Census), 165 (0.5%) Pacific Islander (U.S. Census), 3,562 (10.2%) from Race (United States Census), and 1,212 (3.5%) from two or more races.  Hispanic (U.S. Census) or Latino (U.S. Census) of any race were 6,117 persons (17.5%).\nQuestion: What is the percentage difference between the number of white people and black people?\nAnswer:",
+        "right_answer": "65.1",
+        "model_output": "88.9%",
+        "extracted_output": "88.9%",
+        "extract_answer_code": "None"
+    },
+    {
+        "question": "Passage: Per 2013 census, the total population of the department was 867,463 with 431,357 males and 436,106 females. The proportion of women was 50.30 per cent. The total rural population was 75.70 percent, while the urban population was 24.30 per cent. The proportion of women in child bearing age of 15 to 49 years was 22.00 per cent. The total foreign population in the department was 28,636 which formed 3.30 per cent of the total population in the department. The proportion of assets of foreigners aged 10+ years was 27.40 per cent, while for the people aged 15-64 years, it was 26.40 per cent. The proportion of women in foreign population constituted 47.60 per cent. The number of households in the department was 108,351 and the average household size was 8. The intercensal growth rate of population was 4.60 per cent.\nQuestion: What was the difference in percentage points between the assets of foreigners aged 10+ years and those aged 15-64?\nAnswer:",
+        "right_answer": "1|1.0",
+        "model_output": "1.00",
+        "extracted_output": "1.00",
+        "extract_answer_code": "None"
+    }
+]

@@ -1,0 +1,7 @@
+{
+    "father node": 12,
+    "modification": "modify: Added a loop to generate multiple initial solutions for better coverage.",
+    "before": 0.5601010101010101,
+    "after": 0.5430555555555555,
+    "succeed": false
+}

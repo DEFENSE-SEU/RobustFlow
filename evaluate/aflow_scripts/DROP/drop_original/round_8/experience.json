@@ -1,0 +1,7 @@
+{
+    "father node": 3,
+    "modification": "Modified the workflow to include a step that generates a summary of the question before generating answers. This summary will help provide context and clarity, potentially improving the quality of the generated answers.",
+    "before": 0.7124531024531024,
+    "after": 0.7439531024531024,
+    "succeed": true
+}

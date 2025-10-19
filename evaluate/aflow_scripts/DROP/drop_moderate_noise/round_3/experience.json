@@ -1,0 +1,7 @@
+{
+    "father node": 1,
+    "modification": "Added the AnswerGenerate operator to provide a step-by-step thought process before generating the final answer, and incorporated ScEnsemble to improve the selection of the best solution.",
+    "before": 0.10159907774924606,
+    "after": 0.6366288930498489,
+    "succeed": true
+}

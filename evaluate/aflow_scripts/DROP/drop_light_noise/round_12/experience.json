@@ -1,0 +1,7 @@
+{
+    "father node": 4,
+    "modification": "Added a self-ask mechanism to enhance the quality of the generated response by generating multiple answers and selecting the best one.",
+    "before": 0.6552796419250692,
+    "after": 0.5060916705746326,
+    "succeed": false
+}

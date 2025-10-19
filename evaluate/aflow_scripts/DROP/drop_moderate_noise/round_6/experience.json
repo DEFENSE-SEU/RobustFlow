@@ -1,0 +1,7 @@
+{
+    "father node": 5,
+    "modification": "modify: Added a self-ask step to refine the question before generating the thought process.",
+    "before": 0.6674301441312311,
+    "after": 0.5507926245210728,
+    "succeed": false
+}
